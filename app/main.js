@@ -81,7 +81,7 @@ app.on('ready', () => {
   let RED = require('node-red');
   let express = require('express')();
   let server = require('http').createServer(express);
-  let settings = require('./settings');
+  let settings = require('./.node-red/settings');
   let camera = new require('v4l2camera').Camera('/dev/video0');
   let jpeg = require('jpeg-js');
 
