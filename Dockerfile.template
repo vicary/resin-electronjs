@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y \
   libsmbclient \
   libssh-4 \
   fbset \
+  python \
+  python-rpi.gpio \
   libexpat-dev && rm -rf /var/lib/apt/lists/*
 
 # Set Xorg and FLUXBOX preferences
