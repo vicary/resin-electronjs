@@ -1,3 +1,5 @@
+'use strict';
+
 const electron = require('electron');
 const path = require('path');
 
@@ -14,10 +16,13 @@ const electronConfig = {
   URL_LAUNCHER_HEIGHT: parseInt(process.env.URL_LAUNCHER_HEIGHT || 1080, 10),
   URL_LAUNCHER_TITLE: process.env.URL_LAUNCHER_TITLE || 'RESIN.IO',
   URL_LAUNCHER_CONSOLE: process.env.URL_LAUNCHER_CONSOLE === '1' ? 1 : 0,
-  URL_LAUNCHER_URL: process.env.URL_LAUNCHER_URL || `file:///${path.join(__dirname, 'data', 'index.html')}`,
+  URL_LAUNCHER_URL: process.env.URL_LAUNCHER_URL || 'about:blank',
   URL_LAUNCHER_ZOOM: parseFloat(process.env.URL_LAUNCHER_ZOOM || 1.0),
   URL_LAUNCHER_OVERLAY_SCROLLBARS: process.env.URL_LAUNCHER_CONSOLE === '1' ? 1 : 0,
 };
+
+// reference to main window
+let window;
 
 // enable touch events if your device supports them
 if (electronConfig.URL_LAUNCHER_TOUCH) {
@@ -44,7 +49,7 @@ if (process.env.NODE_ENV === 'development') {
  */
 app.on('ready', () => {
   // here we actually configure the behavour of electronJS
-  const window = new BrowserWindow({
+  window = new BrowserWindow({
     width: electronConfig.URL_LAUNCHER_WIDTH,
     height: electronConfig.URL_LAUNCHER_HEIGHT,
     frame: !!(electronConfig.URL_LAUNCHER_FRAME),
@@ -68,7 +73,32 @@ app.on('ready', () => {
   if (electronConfig.URL_LAUNCHER_CONSOLE) {
     window.openDevTools();
   }
-
-  // the big red button, here we go
-  window.loadURL(electronConfig.URL_LAUNCHER_URL);
 });
+
+// node-red init
+// scope to release variables after initialization.
+{
+  let RED = require('node-red');
+  let express = require('express')();
+  let server = require('http').createServer(express);
+  let settings = require('./settings');
+  let camera = new require('v4l2camera').Camera('/dev/video0');
+
+  camera.start();
+
+  settings.functionGlobalContext.camera = camera;
+
+  RED.init(server, settings);
+
+  express.use(settings.httpAdminRoot, RED.httpAdmin);
+  express.use(settings.httpNodeRoot, RED.httpNode);
+
+  server.listen(settings.uiPort, () => {
+    // the big red button, here we go
+    if (window) {
+      window.loadURL(electronConfig.URL_LAUNCHER_URL);
+    }
+  });
+
+  RED.start();
+}
