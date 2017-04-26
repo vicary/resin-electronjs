@@ -91,7 +91,7 @@ app.on('ready', () => {
   express.use(settings.httpNodeRoot, RED.httpNode);
 
   server.listen(settings.uiPort, () => {
-    console.log('server started.');
+    console.log('server started.', electronConfig);
 
     // the big red button, here we go
     window.loadURL(electronConfig.URL_LAUNCHER_URL);
