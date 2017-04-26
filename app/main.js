@@ -91,13 +91,15 @@ app.on('ready', () => {
   express.use(settings.httpNodeRoot, RED.httpNode);
 
   server.listen(settings.uiPort, () => {
-    console.log('server started.', electronConfig);
+    console.log('Server started with electronConfig:', electronConfig);
 
     // the big red button, here we go
-    window.loadURL(electronConfig.URL_LAUNCHER_URL);
+    setTimeout(() => {
+      console.log('Loading URL %s in browser.', electronConfig.URL_LAUNCHER_URL);
+
+      window.loadURL(electronConfig.URL_LAUNCHER_URL);
+    }, 30000);
   });
 
   RED.start();
-
-  console.log('!------!');
 });
