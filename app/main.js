@@ -73,11 +73,9 @@ app.on('ready', () => {
   if (electronConfig.URL_LAUNCHER_CONSOLE) {
     window.openDevTools();
   }
-});
 
-// node-red init
-// scope to release variables after initialization.
-{
+  // node-red init
+  // scope to release variables after initialization.
   let RED = require('node-red');
   let express = require('express')();
   let server = require('http').createServer(express);
@@ -97,10 +95,8 @@ app.on('ready', () => {
 
   server.listen(settings.uiPort, () => {
     // the big red button, here we go
-    if (window) {
-      window.loadURL(electronConfig.URL_LAUNCHER_URL);
-    }
+    window.loadURL(electronConfig.URL_LAUNCHER_URL);
   });
 
   RED.start();
-}
+});
