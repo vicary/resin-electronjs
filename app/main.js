@@ -71,6 +71,9 @@ app.on('ready', () => {
     window.openDevTools();
   }
 
+  // the big red button, here we go
+  window.loadURL(electronConfig.URL_LAUNCHER_URL);
+
   // node-red init
   // scope to release variables after initialization.
   let RED = require('node-red');
@@ -92,9 +95,6 @@ app.on('ready', () => {
 
   server.listen(settings.uiPort, () => {
     console.log('server started.', electronConfig);
-
-    // the big red button, here we go
-    window.loadURL(electronConfig.URL_LAUNCHER_URL);
   });
 
   RED.start();
