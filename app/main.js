@@ -21,9 +21,6 @@ const electronConfig = {
   URL_LAUNCHER_OVERLAY_SCROLLBARS: process.env.URL_LAUNCHER_CONSOLE === '1' ? 1 : 0,
 };
 
-// reference to main window
-let window;
-
 // enable touch events if your device supports them
 if (electronConfig.URL_LAUNCHER_TOUCH) {
   app.commandLine.appendSwitch('--touch-devices');
@@ -49,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
  */
 app.on('ready', () => {
   // here we actually configure the behavour of electronJS
-  window = new BrowserWindow({
+  const window = new BrowserWindow({
     width: electronConfig.URL_LAUNCHER_WIDTH,
     height: electronConfig.URL_LAUNCHER_HEIGHT,
     frame: !!(electronConfig.URL_LAUNCHER_FRAME),
@@ -94,6 +91,8 @@ app.on('ready', () => {
   express.use(settings.httpNodeRoot, RED.httpNode);
 
   server.listen(settings.uiPort, () => {
+    console.log('server started.');
+
     // the big red button, here we go
     window.loadURL(electronConfig.URL_LAUNCHER_URL);
   });
