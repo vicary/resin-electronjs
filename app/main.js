@@ -80,7 +80,7 @@ app.on('ready', () => {
   let camera = new require('v4l2camera').Camera('/dev/video0');
   let jpeg = require('jpeg-js');
 
-  camera.start();
+  // camera.start();
 
   settings.functionGlobalContext.camera = camera;
   settings.functionGlobalContext.jpeg = jpeg;
