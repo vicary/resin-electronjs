@@ -98,7 +98,7 @@ app.on('ready', () => {
       console.log('Loading URL %s in browser.', electronConfig.URL_LAUNCHER_URL);
 
       window.loadURL(electronConfig.URL_LAUNCHER_URL);
-    }, 30000);
+    }, 25000);
   });
 
   RED.start();
