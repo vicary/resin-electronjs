@@ -45,31 +45,45 @@ if (process.env.NODE_ENV === 'development') {
  we initialize our application display as a callback of the electronJS "ready" event
  */
 app.on('ready', () => {
-  // here we actually configure the behavour of electronJS
-  const window = new BrowserWindow({
-    width: electronConfig.URL_LAUNCHER_WIDTH,
-    height: electronConfig.URL_LAUNCHER_HEIGHT,
-    frame: !!(electronConfig.URL_LAUNCHER_FRAME),
-    title: electronConfig.URL_LAUNCHER_TITLE,
-    kiosk: !!(electronConfig.URL_LAUNCHER_KIOSK),
-    webPreferences: {
-      nodeIntegration: !!(electronConfig.URL_LAUNCHER_NODE),
-      zoomFactor: electronConfig.URL_LAUNCHER_ZOOM,
-      overlayScrollbars: !!(electronConfig.URL_LAUNCHER_OVERLAY_SCROLLBARS),
-    },
-  });
+  let window; // main window reference
 
-  window.webContents.on('did-finish-load', () => {
-    setTimeout(() => {
-      window.show();
-    }, 300);
-  });
+  const createMainWindow = (url) => {
+    // prevent internal closed event loop upon external invoke
+    if (window) {
+      window.removeAllListeners('closed');
+    }
 
-  // if the env-var is set to true,
-  // a portion of the screen will be dedicated to the chrome-dev-tools
-  if (electronConfig.URL_LAUNCHER_CONSOLE) {
-    window.openDevTools();
-  }
+    window = new BrowserWindow({
+      width: electronConfig.URL_LAUNCHER_WIDTH,
+      height: electronConfig.URL_LAUNCHER_HEIGHT,
+      frame: !!(electronConfig.URL_LAUNCHER_FRAME),
+      title: electronConfig.URL_LAUNCHER_TITLE,
+      kiosk: !!(electronConfig.URL_LAUNCHER_KIOSK),
+      webPreferences: {
+        nodeIntegration: !!(electronConfig.URL_LAUNCHER_NODE),
+        zoomFactor: electronConfig.URL_LAUNCHER_ZOOM,
+        overlayScrollbars: !!(electronConfig.URL_LAUNCHER_OVERLAY_SCROLLBARS),
+      },
+    });
+
+    window.once('closed', () => createMainWindow.bind(url));
+
+    window.webContents.on('did-finish-load', () => {
+      setTimeout(() => window.show(), 300);
+    });
+
+    // if the env-var is set to true,
+    // a portion of the screen will be dedicated to the chrome-dev-tools
+    if (electronConfig.URL_LAUNCHER_CONSOLE) {
+      window.openDevTools();
+    }
+
+    if (url) {
+      window.loadURL(url);
+    }
+
+    return window;
+  };
 
   // node-red init
   // scope to release variables after initialization.
@@ -94,11 +108,7 @@ app.on('ready', () => {
     console.log('Server started with electronConfig:', electronConfig);
 
     // the big red button, here we go
-    setTimeout(() => {
-      console.log('Loading URL %s in browser.', electronConfig.URL_LAUNCHER_URL);
-
-      window.loadURL(electronConfig.URL_LAUNCHER_URL);
-    }, 25000);
+    setTimeout(() => createMainWindow(electronConfig.URL_LAUNCHER_URL), 25000);
   });
 
   RED.start();
