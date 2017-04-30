@@ -19,13 +19,14 @@
     "js"
   ],
   "dependencies": {
-    "electron": "^1.4.15",
+    "electron": "^1.6.6",
     "electron-rebuild": "^1.5.7",
+    "electron-printer": "^0.0.5",
     "express": "^4.15.2",
     "node-red": "^0.16.2",
     "node-red-dashboard": "^2.3.9",
     "v4l2camera": "^1.0.4",
-    "jpeg-js": "~0.2.0"
+    "jpeg-js": "^0.2.0",
   },
   "author": "Carlo Maria Curinga",
   "license": "Apache-2.0",
