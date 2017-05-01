@@ -26,8 +26,9 @@
     "express": "^4.15.2",
     "node-red": "^0.16.2",
     "node-red-dashboard": "^2.3.9",
+    "node-red-contrib-tick": "^0.0.2",
     "v4l2camera": "^1.0.4",
-    "jpeg-js": "^0.2.0"
+    "sharp": "^0.17.3"
   },
   "author": "Carlo Maria Curinga",
   "license": "Apache-2.0",
