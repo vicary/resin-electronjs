@@ -177,8 +177,9 @@ module.exports = {
     functionGlobalContext: {
         process: process,
         os: require('os'),
+        fs: require('fs'),
         camera: new require('v4l2camera').Camera('/dev/video0'),
-        jpeg: require('jpeg-js'),
+        sharp: require('sharp'),
         printer: require('electron-printer')
     },
 
