@@ -2,9 +2,8 @@
 
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
-mkdir -p /data/node-red/user || true
-mkdir -p /data/node-red/nodes
-#/usr/src/app/node_modules/node-red/bin/node-red-pi --max-old-space-size=256 --settings /usr/src/app/.node-red/settings.js &
+mkdir -p /data/node-red/user  || true
+mkdir -p /data/node-red/nodes || true
 
 # using local electron module instead of the global electron lets you
 # easily control specific version dependency between your app and electron itself.
