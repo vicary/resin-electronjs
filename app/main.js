@@ -45,63 +45,50 @@ if (process.env.NODE_ENV === 'development') {
  we initialize our application display as a callback of the electronJS "ready" event
  */
 app.on('ready', () => {
-  let window; // main window reference
+  let window = new BrowserWindow({
+    width: electronConfig.URL_LAUNCHER_WIDTH,
+    height: electronConfig.URL_LAUNCHER_HEIGHT,
+    frame: !!(electronConfig.URL_LAUNCHER_FRAME),
+    title: electronConfig.URL_LAUNCHER_TITLE,
+    kiosk: !!(electronConfig.URL_LAUNCHER_KIOSK),
+    webPreferences: {
+      nodeIntegration: !!(electronConfig.URL_LAUNCHER_NODE),
+      zoomFactor: electronConfig.URL_LAUNCHER_ZOOM,
+      overlayScrollbars: !!(electronConfig.URL_LAUNCHER_OVERLAY_SCROLLBARS),
+    },
+  });
 
-  const createMainWindow = (url) => {
-    // prevent internal closed event loop upon external invoke
-    if (window) {
-      window.removeAllListeners('closed');
-    }
+  window.webContents.on('did-finish-load', () => {
+    setTimeout(() => window.show(), 300);
+  });
 
-    window = new BrowserWindow({
-      width: electronConfig.URL_LAUNCHER_WIDTH,
-      height: electronConfig.URL_LAUNCHER_HEIGHT,
-      frame: !!(electronConfig.URL_LAUNCHER_FRAME),
-      title: electronConfig.URL_LAUNCHER_TITLE,
-      kiosk: !!(electronConfig.URL_LAUNCHER_KIOSK),
-      webPreferences: {
-        nodeIntegration: !!(electronConfig.URL_LAUNCHER_NODE),
-        zoomFactor: electronConfig.URL_LAUNCHER_ZOOM,
-        overlayScrollbars: !!(electronConfig.URL_LAUNCHER_OVERLAY_SCROLLBARS),
-      },
-    });
+  // if the env-var is set to true,
+  // a portion of the screen will be dedicated to the chrome-dev-tools
+  if (electronConfig.URL_LAUNCHER_CONSOLE) {
+    window.openDevTools();
+  }
 
-    window.once('closed', () => createMainWindow.bind(url));
-
-    window.webContents.on('did-finish-load', () => {
-      setTimeout(() => window.show(), 300);
-    });
-
-    // if the env-var is set to true,
-    // a portion of the screen will be dedicated to the chrome-dev-tools
-    if (electronConfig.URL_LAUNCHER_CONSOLE) {
-      window.openDevTools();
-    }
-
-    if (url) {
-      window.loadURL(url);
-    }
-
-    return window;
-  };
+  window.loadURL(`file:///usr/src/app/frontend/preload.html`);
 
   // node-red init
   // scope to release variables after initialization.
   let RED = require('node-red');
-  let express = require('express')();
-  let server = require('http').createServer(express);
+  let express = require('express');
+  let app = express();
+  let server = require('http').createServer(app);
   let settings = require('./.node-red/settings');
 
   RED.init(server, settings);
 
-  express.use(settings.httpAdminRoot, RED.httpAdmin);
-  express.use(settings.httpNodeRoot, RED.httpNode);
+  app.use('/app/', express.static(settings.httpStatic));
+  app.use(settings.httpAdminRoot, RED.httpAdmin);
+  app.use(settings.httpNodeRoot, RED.httpNode);
 
   server.listen(settings.uiPort, ()=> {
     console.log('Server started with electronConfig:', electronConfig);
 
     // the big red button, here we go
-    setTimeout(()=> createMainWindow(electronConfig.URL_LAUNCHER_URL), 25000);
+    setTimeout(()=> window.loadURL(electronConfig.URL_LAUNCHER_URL), 20000);
   });
 
   RED.start();
