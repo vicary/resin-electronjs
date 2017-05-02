@@ -36,8 +36,8 @@ body {
   bottom: 0;
 }
 
-.tips.right {
-  left: auto;
+.tips.left {
+  right: auto;
 }
 
 .theme {
@@ -50,20 +50,15 @@ body {
   width: 80vw;
 }
 
-.floating {
-  animation: float .81s infinite alternate;
+p.theme {
+  color: #fff;
+  font-size: 48px;
+  height: 1em;
+  text-shadow: 0 2px 4px #ddd;
 }
 
-.counter {
-  margin: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  font-size: 36px;
-  color: #fff;
-  height: 1em;
+.floating {
+  animation: float .81s infinite alternate;
 }
 
 .btn-back {
