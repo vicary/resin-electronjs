@@ -80,9 +80,9 @@ app.on('ready', () => {
 
   RED.init(server, settings);
 
-  app.use('/app/', express.static(settings.httpStatic));
   app.use(settings.httpAdminRoot, RED.httpAdmin);
   app.use(settings.httpNodeRoot, RED.httpNode);
+  app.use('/app/', express.static(settings.httpStatic));
 
   server.listen(settings.uiPort, ()=> {
     console.log('Server started with electronConfig:', electronConfig);
