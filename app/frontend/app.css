@@ -1,0 +1,73 @@
+@import url(bootstrap.min.css);
+
+@keyframes float {
+  0% { transform: translateY(0) }
+  100% { transform: translateY(-10%) }
+}
+
+html, body, div[ng-view] {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #fff url(/background.png) no-repeat center center;
+}
+
+.foreground::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url(/foreground.png);
+}
+
+/* floating tooltip for the big red button. */
+.tips {
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.tips.right {
+  left: auto;
+}
+
+.theme {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 80vw;
+}
+
+.floating {
+  animation: float .81s infinite alternate;
+}
+
+.counter {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 36px;
+  color: #fff;
+  height: 1em;
+}
+
+.btn-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
