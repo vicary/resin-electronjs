@@ -49,7 +49,7 @@ app.config(($routeProvider)=> {
         let socket = $websocket.$new(wsConfig);
         let ctx = this;
 
-        ctx.counter = 3;
+        ctx.counter = 5;
         $timeout(function countdown() {
           if (--ctx.counter) {
             $timeout(countdown, 1000);
@@ -58,7 +58,7 @@ app.config(($routeProvider)=> {
             ctx.counter = 'SMILE :)';
             socket.$emit('capture');
           }
-        });
+        }, 1000);
       },
       controllerAs: '$controller',
       templateUrl: 'shoot.html'
