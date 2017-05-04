@@ -18,7 +18,7 @@ let app = angular.module('photobox', [
 ]);
 
 let wsConfig = {
-  url: 'ws://localhost/ws',
+  url: 'ws://127.0.0.1/ws',
   enqueue: true
 };
 
