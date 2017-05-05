@@ -55,7 +55,7 @@ app.config(($routeProvider)=> {
             $timeout(countdown, 1000);
           }
           else {
-            ctx.counter = 'SMILE :)';
+            delete ctx.counter;
             socket.$emit('capture');
           }
         }, 1000);
@@ -71,6 +71,8 @@ app.config(($routeProvider)=> {
        */
       controller: function($websocket, $scope) {
         let socket = $websocket.$new(wsConfig);
+
+        this.timestamp = Date().now();
 
         socket.$on('press', ()=> {socket.$emit('print')});
 

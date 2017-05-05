@@ -52,9 +52,17 @@ body {
 
 p.theme {
   color: #fff;
-  font-size: 48px;
-  height: 1em;
   text-shadow: 0 2px 4px #ddd;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, .15);
+  border-radius: 30px;
+  font-size: 60px;
+  line-height: 1em;
+  width: 1em;
+  height: 1em;
+  text-align: center;
 }
 
 .floating {

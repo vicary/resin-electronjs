@@ -1,5 +1,8 @@
 <div class="text-center foreground">
-  <a class="btn btn-link btn-back pull-left">&lt; Retake</a>
-  <img class="rounded theme" src="/capture.jpg"/>
-  <img class="tips floating" src="tips-preview.png"/>
+  <!-- <a class="btn btn-link btn-back pull-left">&lt; Retake</a> -->
+  <a href="#!/home">
+    <img src="text-retake.png"/>
+  </a>
+  <img class="rounded theme" ng-src="/capture.jpg?{{$controller.timestamp}}"/>
+  <img class="tips floating" src="text-print.png"/>
 </div>
