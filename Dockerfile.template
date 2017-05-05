@@ -23,10 +23,12 @@ RUN apt-get update && apt-get install -y \
   libsmbclient \
   libssh-4 \
   fbset \
+  cups \
+  printer-driver-gutenprint \
+  libexpat-dev \
   python \
   python-rpi.gpio \
-  libexpat-dev \
-  cups \
+  python-cups \
   && rm -rf /var/lib/apt/lists/*
 
 # Set Xorg and FLUXBOX preferences
