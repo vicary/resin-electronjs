@@ -29,6 +29,20 @@ RUN apt-get update && apt-get install -y \
   python \
   python-rpi.gpio \
   python-cups \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Compile gutenprint 5.2.12 for cups drivers
+RUN apt-get update \
+  && apt-get install -y libcupsimage2 libcupsimage2-dev libtiff5-dev libjpeg-dev libpng12-dev libssh-dev \
+  && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.12/gutenprint-5.2.12.tar.bz2 | tar xj \
+  && cd gutenprint-5.2.12 \
+  && ./configure --enable-cups-ppds \
+  && make && make install \
+  && cd .. \
+  && rm -rf gutenprint-5.2.12 \
+  && apt-get autoremove -y libcupsimage2 libcupsimage2-dev libtiff5-dev libjpeg-dev libpng12-dev libssh-dev \
+  && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
 # Set Xorg and FLUXBOX preferences
