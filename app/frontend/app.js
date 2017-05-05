@@ -32,10 +32,9 @@ app.config(($routeProvider)=> {
         let socket = $websocket.$new(wsConfig);
 
         socket.$on('slide', v => {ctx.slideUrl = v.url});
-        socket.$on('press', ()=> {location.hash = '!/shoot'});
-
-        $scope.$on('$destroy', ()=> {
-          socket.$un('slide').$un('press');
+        socket.$on('press', ()=> {
+          location.hash = '!/shoot';
+          socket.$un('press');
         });
       },
       controllerAs: '$controller',
@@ -74,9 +73,11 @@ app.config(($routeProvider)=> {
 
         this.timestamp = Date().now();
 
-        socket.$on('press', ()=> {socket.$emit('print')});
-
-        $scope.$on('$destroy', ()=> {socket.$un('press')});
+        socket.$on('press', ()=> {
+          socket.$emit('print');
+          socket.$un('press');
+        });
+        // $scope.$on('$destroy', ()=> {socket.$un('press')});
       },
       controllerAs: '$controller',
       templateUrl: 'preview.html'
