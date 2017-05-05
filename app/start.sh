@@ -8,6 +8,9 @@ mkdir -p /data/node-red/nodes || true
 # start cups daemon
 /use/sbin/cupsd
 
+# auto detect usb printer
+/usr/src/app/install_printer.py
+
 # using local electron module instead of the global electron lets you
 # easily control specific version dependency between your app and electron itself.
 # the syntax below starts an X istance with ONLY our electronJS fired up,
