@@ -14,7 +14,7 @@ body {
   background: #fff url(/background.png) no-repeat center center;
 }
 
-.foreground::after {
+.foreground::before {
   content: '';
   display: block;
   width: 100%;
@@ -25,6 +25,7 @@ body {
   top: 0;
   left: 0;
   background-image: url(/foreground.png);
+  z-index: -1;
 }
 
 /* floating tooltip for the big red button. */
