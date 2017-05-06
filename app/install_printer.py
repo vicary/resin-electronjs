@@ -2,8 +2,6 @@
 
 import cups
 
-print 'Autodetecting USB printers...'
-
 conn = cups.Connection()
 devices = conn.getDevices()
 
@@ -19,7 +17,7 @@ printer_name = devices[device_name]['device-info'].replace(' ', '-')
 
 device_id = devices[device_name]['device-id']
 
-print 'Printer found: ', printer_name, 'device-id: ', device_id
+print 'Installing USB printer: ', printer_name
 
 # Hardcode experimental driver model Fujifilm
 if device_id.find('ASK-300') > -1:
@@ -41,8 +39,6 @@ conn.addPrinter(name=printer_name, ppdname=ppd, device=device_name)
 conn.enablePrinter(printer_name)
 conn.acceptJobs(printer_name)
 conn.setDefault(printer_name)
-
-print 'Done.'
 
 # Fujifilm ASK-300 driver in guten print is still experimental
 # The printer itself shows as Fujifilm ASK-Printer, but the driver expects Fujifilm ASK-300
