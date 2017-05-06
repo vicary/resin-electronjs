@@ -66,6 +66,10 @@ p.theme {
   text-align: center;
 }
 
+p.theme::empty {
+  display: none;
+}
+
 .floating {
   animation: float .81s infinite alternate;
 }
