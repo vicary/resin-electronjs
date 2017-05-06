@@ -18,7 +18,7 @@ let app = angular.module('photobox', [
 ]);
 
 let wsConfig = {
-  url: 'ws://127.0.0.1/ws',
+  url: 'ws://127.0.0.1/ws', // just a sane default...
   enqueue: true
 };
 
@@ -102,7 +102,9 @@ app.config(($routeProvider)=> {
     .otherwise({ redirectTo: '/home' });
 });
 
-app.run(($websocket, $window)=> {
+app.run(($websocket, $location)=> {
+  wsConfig.url = `ws://${$location.host()}/ws`;
+
   let socket = $websocket.$new(wsConfig);
 
   socket.$on('normal', ()=> {location.hash = '!/home'});

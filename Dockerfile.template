@@ -5,8 +5,6 @@ RUN sed -i "s!httpredir.debian.org!`curl -s -D - http://httpredir.debian.org/dem
 
 COPY debian-pinning /etc/apt/preferences.d/
 
-# cups libcups2-dev libcupsimage2-dev libtiff5-dev libopenjpeg-dev libssh-dev
-
 # Install other apt deps
 RUN apt-get update && apt-get install -y \
   apt-utils \
