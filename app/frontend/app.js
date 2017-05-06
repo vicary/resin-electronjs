@@ -32,10 +32,7 @@ app.config(($routeProvider)=> {
         let socket = $websocket.$new(wsConfig);
 
         socket.$on('slide', v => {ctx.slideUrl = v.url});
-        socket.$on('press', ()=> {
-          location.hash = '!/shoot';
-          socket.$un('press');
-        });
+        socket.$un('press').$on('press', ()=> {location.hash = '!/shoot'});
       },
       controllerAs: '$controller',
       templateUrl: 'home.html'
@@ -68,16 +65,12 @@ app.config(($routeProvider)=> {
        * 1. pushes the physical button to print, or
        * 2. tab the back button on screen to retake.
        */
-      controller: function($websocket, $scope) {
+      controller: function PreviewController($websocket, $scope) {
         let socket = $websocket.$new(wsConfig);
 
         this.timestamp = Date.now();
 
-        socket.$on('press', ()=> {
-          socket.$emit('print');
-          socket.$un('press');
-        });
-        // $scope.$on('$destroy', ()=> {socket.$un('press')});
+        socket.$un('press').$on('press', ()=> {socket.$emit('print')});
       },
       controllerAs: '$controller',
       templateUrl: 'preview.html'
