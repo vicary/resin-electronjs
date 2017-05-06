@@ -74,12 +74,14 @@ app.on('ready', () => {
   // scope to release variables after initialization.
   let RED = require('node-red');
   let express = require('express');
+  let cors = require('cors');
   let app = express();
   let server = require('http').createServer(app);
   let settings = require('./.node-red/settings');
 
   RED.init(server, settings);
 
+  app.use(cors());
   app.use(settings.httpAdminRoot, RED.httpAdmin);
   app.use(settings.httpNodeRoot, RED.httpNode);
   app.use('/app/', express.static(settings.httpStatic));

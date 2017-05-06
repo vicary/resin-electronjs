@@ -24,6 +24,7 @@
     "electron-rebuild": "^1.5.7",
     "electron-printer": "^0.0.5",
     "express": "^4.15.2",
+    "cors": "^2.8.3",
     "node-red": "^0.16.2",
     "node-red-dashboard": "^2.3.9",
     "node-red-contrib-tick": "^0.0.2",
