@@ -71,7 +71,7 @@ app.config(($routeProvider)=> {
       controller: function($websocket, $scope) {
         let socket = $websocket.$new(wsConfig);
 
-        this.timestamp = Date().now();
+        this.timestamp = Date.now();
 
         socket.$on('press', ()=> {
           socket.$emit('print');
@@ -102,8 +102,8 @@ app.config(($routeProvider)=> {
     .otherwise({ redirectTo: '/home' });
 });
 
-app.run(($websocket, $location)=> {
-  wsConfig.url = `ws://${$location.host()}/ws`;
+app.run(($websocket)=> {
+  wsConfig.url = `ws://${location.host}/ws`;
 
   let socket = $websocket.$new(wsConfig);
 
