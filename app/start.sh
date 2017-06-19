@@ -6,7 +6,8 @@ mkdir -p /data/node-red/user  || true
 mkdir -p /data/node-red/nodes || true
 
 # start cups daemon
-/use/sbin/cupsd
+#/use/sbin/cupsd
+#systemctl enable cups && systemctl start cups
 
 # auto detect usb printer
 /usr/src/app/install_printer.py
