@@ -24,25 +24,22 @@ RUN apt-get update && apt-get install -y \
   libssh-4 \
   fbset \
   cups \
-  printer-driver-gutenprint \
   libexpat-dev \
   python \
   python-rpi.gpio \
   python-cups \
+  libcupsimage2-dev libtiff5-dev libopenjpeg-dev libssh-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Compile gutenprint 5.2.12 for cups drivers
-RUN apt-get update \
-  && apt-get install -y libcupsimage2-dev libtiff5-dev libopenjpeg-dev libssh-dev \
+# Compile gutenprint 5.2.12 from source after removing printer-driver-gutenprint@5.2.10
+RUN apt-get autoremove -y printer-driver-gutenprint \
   && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.12/gutenprint-5.2.12.tar.bz2 | tar xj \
   && cd gutenprint-5.2.12 \
   && ./configure --enable-cups-ppds \
-  && make && make install \
+  && make clean && make && make install \
   && cd .. \
-  && rm -rf gutenprint-5.2.12 \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf gutenprint-5.2.12
 
 # Set Xorg and FLUXBOX preferences
 RUN mkdir ~/.fluxbox
