@@ -105,6 +105,7 @@ app.run(($websocket)=> {
   socket.$on('shot', ()=> {location.hash = '!/preview'});
   socket.$on('printing', ()=> {location.hash = '!/printing'});
   socket.$on('printed', ()=> {location.hash = '!/done'});
+  socket.$on('reload', ()=>location.reload());
 });
 
 })();
