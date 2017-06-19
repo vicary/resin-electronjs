@@ -88,7 +88,7 @@ module.exports = {
     // When httpAdminRoot is used to move the UI to a different root path, the
     // following property can be used to identify a directory of static content
     // that should be served at http://localhost:1880/.
-    //httpStatic: '/home/nol/node-red-static/',
+    httpStatic: '/usr/src/app/frontend',
 
     // The maximum size of HTTP request that will be accepted by the runtime api.
     // Default: 5mb
@@ -176,10 +176,10 @@ module.exports = {
 
     functionGlobalContext: {
         process: process,
-        os: require('os')
-        // octalbonescript:require('octalbonescript'),
-        // jfive:require("johnny-five"),
-        // j5board:require("johnny-five").Board({repl:false})
+        os: require('os'),
+        camera: new require('v4l2camera').Camera('/dev/video0'),
+        jpeg: require('jpeg-js'),
+        printer: require('electron-printer')
     },
 
     // The following property can be used to order the categories in the editor
