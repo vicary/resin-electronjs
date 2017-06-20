@@ -41,6 +41,21 @@ RUN apt-get autoremove -y printer-driver-gutenprint \
   && cd .. \
   && rm -rf gutenprint-5.2.12
 
+# libMitsuD70ImageReProcess
+RUN apt-get update && apt-get install -y libusb-1.0-0-dev \
+  && git clone --depth=1 git://git.shaftnet.org/selphy_print.git \
+  && cd selphy_print \
+  && make clean && make && make install \
+  && cd lib70x \
+  && make clean && make && make install \
+  && cd ../.. \
+  && rm -rf selphy_print \
+  && echo '/usr/local/lib' >> /etc/ld.so.conf.d/local.conf \
+  && ldconfig \
+  && apt-get autoremove -y libusb-1.0-0-dev \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 # Set Xorg and FLUXBOX preferences
 RUN mkdir ~/.fluxbox
 RUN echo "xset s off" > ~/.fluxbox/startup && echo "xserver-command=X -s 0 dpms" >> ~/.fluxbox/startup
