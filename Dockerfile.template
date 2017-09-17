@@ -1,4 +1,4 @@
-FROM resin/%%RESIN_MACHINE_NAME%%-node:7
+FROM resin/%%RESIN_MACHINE_NAME%%-node:8
 
 # Install other apt deps
 RUN apt-get update && apt-get install -y \
@@ -32,14 +32,14 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Compile gutenprint 5.2.12 from source after removing printer-driver-gutenprint@5.2.10
+# Compile gutenprint 5.2.13 from source after removing printer-driver-gutenprint@5.2.10
 RUN apt-get autoremove -y printer-driver-gutenprint \
-  && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.12/gutenprint-5.2.12.tar.bz2 | tar xj \
-  && cd gutenprint-5.2.12 \
+  && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.13/gutenprint-5.2.13.tar.bz2 | tar xj \
+  && cd gutenprint-5.2.13 \
   && ./configure --enable-cups-ppds \
   && make clean && make && make install \
   && cd .. \
-  && rm -rf gutenprint-5.2.12
+  && rm -rf gutenprint-5.2.13
 
 # libMitsuD70ImageReProcess
 RUN apt-get update && apt-get install -y libusb-1.0-0-dev \
