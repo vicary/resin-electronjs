@@ -1,0 +1,2157 @@
+[
+  {
+    "id": "bab7a3e1.e007a",
+    "type": "tab",
+    "label": "Shoot"
+  },
+  {
+    "id": "bf037966.351838",
+    "type": "tab",
+    "label": "Tests"
+  },
+  {
+    "id": "fbd99c79.ab64",
+    "type": "tab",
+    "label": "Settings"
+  },
+  {
+    "id": "d41d4723.013ea8",
+    "type": "ui_base",
+    "theme": {
+      "name": "theme-dark",
+      "lightTheme": {
+        "default": "#0094CE",
+        "baseColor": "#0094CE",
+        "baseFont": "Helvetica Neue",
+        "edited": true,
+        "reset": false
+      },
+      "darkTheme": {
+        "default": "#097479",
+        "baseColor": "#097479",
+        "baseFont": "Helvetica Neue",
+        "edited": true,
+        "reset": false
+      },
+      "customTheme": {
+        "name": "Untitled Theme 1",
+        "default": "#4B7930",
+        "baseColor": "#4B7930",
+        "baseFont": "Helvetica Neue"
+      },
+      "themeState": {
+        "base-color": {
+          "default": "#097479",
+          "value": "#097479",
+          "edited": false
+        },
+        "page-titlebar-backgroundColor": {
+          "value": "#097479",
+          "edited": false
+        },
+        "page-backgroundColor": {
+          "value": "#111111",
+          "edited": false
+        },
+        "page-sidebar-backgroundColor": {
+          "value": "#000000",
+          "edited": false
+        },
+        "group-textColor": {
+          "value": "#0eb8c0",
+          "edited": false
+        },
+        "group-borderColor": {
+          "value": "#555555",
+          "edited": false
+        },
+        "group-backgroundColor": {
+          "value": "#333333",
+          "edited": false
+        },
+        "widget-textColor": {
+          "value": "#eeeeee",
+          "edited": false
+        },
+        "widget-backgroundColor": {
+          "value": "#097479",
+          "edited": false
+        },
+        "widget-borderColor": {
+          "value": "#333333",
+          "edited": false
+        }
+      }
+    },
+    "site": {
+      "name": "Photobox Dashboard",
+      "hideToolbar": "true",
+      "allowSwipe": "false",
+      "dateFormat": "DD/MM/YYYY",
+      "sizes": {
+        "sx": 48,
+        "sy": 48,
+        "gx": 6,
+        "gy": 6,
+        "cx": 6,
+        "cy": 6,
+        "px": 0,
+        "py": 0
+      }
+    }
+  },
+  {
+    "id": "fec84c51.67372",
+    "type": "ui_tab",
+    "z": "",
+    "name": "Home",
+    "icon": "dashboard"
+  },
+  {
+    "id": "8c52e7b0.51f5b8",
+    "type": "ui_group",
+    "z": "",
+    "name": "Default",
+    "tab": "fec84c51.67372",
+    "disp": false,
+    "width": "12"
+  },
+  {
+    "id": "9c520008.abdbc",
+    "type": "websocket-listener",
+    "z": "",
+    "path": "/ws",
+    "wholemsg": "true"
+  },
+  {
+    "id": "21e2e247.f2e21e",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 100,
+    "y": 200,
+    "wires": [
+      [
+        "770bff9.cc8c8"
+      ]
+    ]
+  },
+  {
+    "id": "770bff9.cc8c8",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "camera.configGet()",
+    "func": "msg.payload=global.get('camera').configGet();\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 290,
+    "y": 200,
+    "wires": [
+      [
+        "611682e4.f6915c"
+      ]
+    ]
+  },
+  {
+    "id": "611682e4.f6915c",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "478c769f.899378",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "camera.formats",
+    "payloadType": "global",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 140,
+    "y": 240,
+    "wires": [
+      [
+        "be767fbc.d2738"
+      ]
+    ]
+  },
+  {
+    "id": "be767fbc.d2738",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "4efc05bd.24771c",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "camera.configSet()",
+    "func": "let camera = global.get('camera');\n\ncamera\n.configSet({\n    format: 1196444237,\n    width: 800,\n    height: 600,\n    interval: {\n        numerator: 1,\n        denominator: 30\n    }\n})\n.start();\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 290,
+    "y": 160,
+    "wires": [
+      [
+        "4de01811.8cde08"
+      ]
+    ]
+  },
+  {
+    "id": "a309051c.493de8",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 100,
+    "y": 160,
+    "wires": [
+      [
+        "4efc05bd.24771c"
+      ]
+    ]
+  },
+  {
+    "id": "4de01811.8cde08",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "37cd9a2f.c5f9d6",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "camera.controls",
+    "payloadType": "global",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 140,
+    "y": 280,
+    "wires": [
+      [
+        "5be2ccc7.8a3664"
+      ]
+    ]
+  },
+  {
+    "id": "5be2ccc7.8a3664",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 280,
+    "wires": []
+  },
+  {
+    "id": "e52d34ee.6c8268",
+    "type": "rpi-gpio out",
+    "z": "bf037966.351838",
+    "name": "Button LED (GPIO18)",
+    "pin": "12",
+    "set": true,
+    "level": "0",
+    "out": "out",
+    "x": 520,
+    "y": 320,
+    "wires": []
+  },
+  {
+    "id": "afc5d7b1.5edb48",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 100,
+    "y": 320,
+    "wires": [
+      [
+        "5a4d5f1f.50b14"
+      ]
+    ]
+  },
+  {
+    "id": "5a4d5f1f.50b14",
+    "type": "trigger",
+    "z": "bf037966.351838",
+    "op1": "1",
+    "op2": "0",
+    "op1type": "str",
+    "op2type": "str",
+    "duration": "1",
+    "extend": false,
+    "units": "s",
+    "reset": "",
+    "name": "",
+    "x": 280,
+    "y": 320,
+    "wires": [
+      [
+        "e52d34ee.6c8268"
+      ]
+    ]
+  },
+  {
+    "id": "7a8ef98a.935b88",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "loop: camera.capture()",
+    "func": "let camera = global.get('camera');\nlet jpeg = global.get('jpeg');\nlet active = true;\nlet boundary = msg._msgid;\nlet res = msg.res._res;\n\n// auto close when connection closes.\nmsg.req.on('close', ()=> { active = false; });\n\n// force close on10 secs, just to be safe.\nsetTimeout(()=> { active = false }, 10000);\n\nres.set({\n    'Content-Type': `multipart/x-mixed-replace;boundary=${boundary}`,\n    'Connection': 'keep-alive',\n    'Expires': (new Date()).toString(),\n    'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',\n    'pragma': 'no-cache'\n});\n\n// if already started, skip .start()\nif (!flow.get('active')) {\n    camera.configSet({\n        format: 1196444237,\n        width: 800,\n        height: 600,\n       interval: {\n            numerator: 1,\n            denominator: 30\n        }\n    })\n    .start();\n    \n    flow.set('active', true);\n}\n\nlet capture =camera.capture.bind(camera, success=> {\n    if (success && active && flow.get('active')) {\n        let buffer = Buffer(camera.frameRaw());\n        \n        try {\n            res.write(`--${boundary}\\r\\n`);\n            res.write('Content-Type: image/jpeg\\r\\n');\n            res.write(`Content-Length: ${buffer.length}\\r\\n\\r\\n`);\n            res.write(buffer, 'binary');\n            res.write('\\r\\n');\n        }\n        catch(e) {\n            res.end();\n            throw e;\n       }\n        \n        setTimeout(capture, 100);\n    }\n    else {\n        res.end();\n    }\n});\n\ncapture();\nkeepAlive();\n\nfunction keepAlive() {\n  if (active && flow.get('active')) {\n    node.send(msg);\n    setTimeout(keepAlive, 1000);\n  }\n}",
+    "outputs": "1",
+    "noerr": 0,
+    "x": 360,
+    "y": 160,
+    "wires": [
+      [
+        "aaa48eb0.0a366"
+      ]
+    ]
+  },
+  {
+    "id": "bfb8d68b.c73648",
+    "type": "http in",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "url": "/preview.jpg",
+    "method": "get",
+    "swaggerDoc": "",
+    "x": 100,
+    "y": 160,
+    "wires": [
+      [
+        "7a8ef98a.935b88",
+        "aaa48eb0.0a366"
+      ]
+    ]
+  },
+  {
+    "id": "7d1eb1e6.d2c8a",
+    "type": "comment",
+    "z": "bab7a3e1.e007a",
+    "name": "TODO: smart config",
+    "info": "0. Match closest desired resolution from avaiable\n`camera.formats` and apply that format.\n\n0. Find a way to stream YUYV and H.264 pixel format.",
+    "x": 110,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "a3d0055e.fcc2f8",
+    "type": "websocket in",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "server": "9c520008.abdbc",
+    "client": "",
+    "x": 80,
+    "y": 300,
+    "wires": [
+      [
+        "2ade461a.f78eda"
+      ]
+    ]
+  },
+  {
+    "id": "a74b6084.acd69",
+    "type": "debug",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "true",
+    "x": 130,
+    "y": 440,
+    "wires": []
+  },
+  {
+    "id": "254f54e9.a52f0c",
+    "type": "switch",
+    "z": "bab7a3e1.e007a",
+    "name": "ws event router",
+    "property": "topic",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "capture",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
+        "v": "print",
+        "vt": "str"
+      },
+      {
+        "t": "else"
+      }
+    ],
+    "checkall": "false",
+    "outputs": 3,
+    "x": 100,
+    "y": 400,
+    "wires": [
+      [
+        "aaa48eb0.0a366",
+        "ce438c40.72e59",
+        "3a02ee48.3f7912"
+      ],
+      [
+        "9c09a6b5.3ede88",
+        "78d3fc3e.29bab4"
+      ],
+      [
+        "a74b6084.acd69"
+      ]
+    ]
+  },
+  {
+    "id": "8c92f03a.4148",
+    "type": "tick",
+    "z": "bab7a3e1.e007a",
+    "name": "Every 10 secs",
+    "interval": "10000",
+    "x": 100,
+    "y": 600,
+    "wires": [
+      [
+        "dc9bbbf4.fcd908"
+      ]
+    ]
+  },
+  {
+    "id": "8cc240dc.1d6f9",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "random file in directory `msg.filename`",
+    "func": "let fs = global.get('fs');\n\nfs.readdir(msg.filename, (err, files)=> {\n    if (err) return;\n\n    let file = files[Math.round(Math.random() * files.length)];\n    \n    msg.payload = { slideUrl: file };\n    \n    node.send(msg);\n});\n",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 410,
+    "y": 640,
+    "wires": [
+      [
+        "9ec633e5.cb44d",
+        "a607b8f3.f696b8"
+      ]
+    ]
+  },
+  {
+    "id": "dc9bbbf4.fcd908",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "msg.filename = /data/slides",
+    "rules": [
+      {
+        "t": "set",
+        "p": "filename",
+        "pt": "msg",
+        "to": "/data/slides",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 380,
+    "y": 600,
+    "wires": [
+      [
+        "8cc240dc.1d6f9"
+      ]
+    ]
+  },
+  {
+    "id": "9ec633e5.cb44d",
+    "type": "debug",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "active": false,
+    "console": "false",
+    "complete": "payload.slideUrl",
+    "x": 360,
+    "y": 680,
+    "wires": []
+  },
+  {
+    "id": "3aa58436.e0fd3c",
+    "type": "inject",
+    "z": "bab7a3e1.e007a",
+    "name": "Invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 640,
+    "wires": [
+      [
+        "dc9bbbf4.fcd908"
+      ]
+    ]
+  },
+  {
+    "id": "cf704ce5.aab06",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "camera.capture()",
+    "func": "let camera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 530,
+    "y": 320,
+    "wires": [
+      [
+        "11cb4026.04bdf",
+        "7ea6d594.942a3c"
+      ],
+      [
+        "5986da8e.296c54"
+      ]
+    ]
+  },
+  {
+    "id": "aaa48eb0.0a366",
+    "type": "trigger",
+    "z": "bab7a3e1.e007a",
+    "op1": "",
+    "op2": "0",
+    "op1type": "nul",
+    "op2type": "str",
+    "duration": "5",
+    "extend": true,
+    "units": "s",
+    "reset": "",
+    "name": "",
+    "x": 320,
+    "y": 200,
+    "wires": [
+      [
+        "7bbfcfc5.3bbcf"
+      ]
+    ]
+  },
+  {
+    "id": "7bbfcfc5.3bbcf",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "camera.stop()",
+    "func": "let camera = global.get('camera');\n\nflow.set('active', undefined);\n\ncamera.stop(()=>{});",
+    "outputs": "0",
+    "noerr": 0,
+    "x": 560,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "5986da8e.296c54",
+    "type": "link out",
+    "z": "bab7a3e1.e007a",
+    "name": "event: normal",
+    "links": [
+      "abd1b79b.63d948"
+    ],
+    "x": 815,
+    "y": 480,
+    "wires": []
+  },
+  {
+    "id": "abd1b79b.63d948",
+    "type": "link in",
+    "z": "bab7a3e1.e007a",
+    "name": "event: normal",
+    "links": [
+      "5986da8e.296c54"
+    ],
+    "x": 175,
+    "y": 820,
+    "wires": [
+      [
+        "ac94c88a.770068"
+      ]
+    ]
+  },
+  {
+    "id": "ac94c88a.770068",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: normal",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "normal",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 340,
+    "y": 820,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "aeadce73.91d42",
+    "type": "link in",
+    "z": "bab7a3e1.e007a",
+    "name": "event: slide",
+    "links": [
+      "a607b8f3.f696b8"
+    ],
+    "x": 175,
+    "y": 860,
+    "wires": [
+      [
+        "be38b87d.b98858"
+      ]
+    ]
+  },
+  {
+    "id": "be38b87d.b98858",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: slide",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "slide",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 330,
+    "y": 860,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "58fb4496.ddd6cc",
+    "type": "websocket out",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "server": "9c520008.abdbc",
+    "client": "",
+    "x": 540,
+    "y": 900,
+    "wires": []
+  },
+  {
+    "id": "a607b8f3.f696b8",
+    "type": "link out",
+    "z": "bab7a3e1.e007a",
+    "name": "event: slide",
+    "links": [
+      "aeadce73.91d42"
+    ],
+    "x": 815,
+    "y": 600,
+    "wires": []
+  },
+  {
+    "id": "11cb4026.04bdf",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "write: /data/capture.jpg",
+    "func": "let fs = global.get('fs');\n\nfs.writeFile('/data/capture.jpg', msg.payload, (err)=> {\n    if (err) {\n        msg.payload = err;\n        node.send([null, msg]);\n    }\n    else {\n        node.send(msg);\n    }\n});\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 550,
+    "y": 360,
+    "wires": [
+      [
+        "7c426567.5841fc"
+      ],
+      [
+        "5986da8e.296c54"
+      ]
+    ]
+  },
+  {
+    "id": "7c426567.5841fc",
+    "type": "link out",
+    "z": "bab7a3e1.e007a",
+    "name": "event: shot",
+    "links": [
+      "7547a8ec.9c2bd8"
+    ],
+    "x": 815,
+    "y": 360,
+    "wires": []
+  },
+  {
+    "id": "7547a8ec.9c2bd8",
+    "type": "link in",
+    "z": "bab7a3e1.e007a",
+    "name": "event: shot",
+    "links": [
+      "7c426567.5841fc"
+    ],
+    "x": 175,
+    "y": 900,
+    "wires": [
+      [
+        "7dc2467.53bdcb8"
+      ]
+    ]
+  },
+  {
+    "id": "7dc2467.53bdcb8",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: shot",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "shot",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 330,
+    "y": 900,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "456f249d.6dc6ac",
+    "type": "file in",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "filename": "/data/capture.jpg",
+    "format": "",
+    "x": 350,
+    "y": 80,
+    "wires": [
+      [
+        "a1a45c90.e52ea"
+      ]
+    ]
+  },
+  {
+    "id": "cc9da484.a6a9e8",
+    "type": "http in",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "url": "/capture.jpg?*",
+    "method": "get",
+    "swaggerDoc": "",
+    "x": 110,
+    "y": 80,
+    "wires": [
+      [
+        "456f249d.6dc6ac"
+      ]
+    ]
+  },
+  {
+    "id": "a1a45c90.e52ea",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "headers",
+        "pt": "msg",
+        "to": "{\"content-type\":\"image/jpeg\"}",
+        "tot": "json"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 350,
+    "y": 120,
+    "wires": [
+      [
+        "2fb716b4.852e7a"
+      ]
+    ]
+  },
+  {
+    "id": "2fb716b4.852e7a",
+    "type": "http response",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "x": 530,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "3e1424c9.a3fc9c",
+    "type": "rpi-gpio in",
+    "z": "bab7a3e1.e007a",
+    "name": "Button Press",
+    "pin": "13",
+    "intype": "up",
+    "debounce": "1000",
+    "read": true,
+    "x": 110,
+    "y": 780,
+    "wires": [
+      [
+        "88fe1eca.6cec7"
+      ]
+    ]
+  },
+  {
+    "id": "88fe1eca.6cec7",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: press",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "press",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 330,
+    "y": 780,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "524f77f1.0a0238",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "print to default printer",
+    "func": "let printer = global.get('printer');\n\nif (printer.getDefaultPrinterName()) {\n  printer.printFile({\n    filename: msg.filename,\n    type: 'JPEG',\n    success: jobId=> {\n      msg.payload = jobId;\n      node.send(msg);\n    },\n    error: err=> {\n      msg.payload = err;\n      node.send([null, msg]);\n    }\n  });\n}\nelse {\n  msg.payload = 'Default printer not found.';\n  node.send([null, msg]);\n}\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 360,
+    "y": 520,
+    "wires": [
+      [
+        "acd1caa4.ebccf8",
+        "98daae18.3fa8c"
+      ],
+      [
+        "5986da8e.296c54",
+        "98daae18.3fa8c"
+      ]
+    ]
+  },
+  {
+    "id": "e496556c.cca6b8",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "compose printing image",
+    "func": "let sharp = global.get('sharp');\n\nmsg.filename = `/tmp/${msg._msgid}.jpg`;\n\n// sharp(null, {\n//   create: {\n//     width: 1200,\n//     height: 800,\n//     channels: 4,\n//     background: { r: 255, g: 255, b: 255, alpha: 255 }\n//   }\n// })\n// .overlayWith('/data/underlay.png')\nsharp('/data/underlay.png')\n.overlayWith('/data/capture.jpg', { top: 100, left: 350 })\n.withMetadata()\n.jpeg()\n.toFile(msg.filename)\n.then(info=> {\n  msg.payload = info;\n  node.send(msg);\n}, err=> {\n  msg.payload = err;\n  node.send([null, msg]);\n});\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 370,
+    "y": 480,
+    "wires": [
+      [
+        "524f77f1.0a0238"
+      ],
+      [
+        "5986da8e.296c54"
+      ]
+    ]
+  },
+  {
+    "id": "f144855.f5c4078",
+    "type": "comment",
+    "z": "bab7a3e1.e007a",
+    "name": "todo: printing event",
+    "info": "Use printer API to poll until the job finishes.\n\nAfter a 60 sec timeout, sends \"CANCEL\" command\nto the printer and resets to normal state.",
+    "x": 120,
+    "y": 520,
+    "wires": []
+  },
+  {
+    "id": "cfb2b332.371cf",
+    "type": "comment",
+    "z": "bab7a3e1.e007a",
+    "name": "todo: printed event",
+    "info": "",
+    "x": 120,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "9c09a6b5.3ede88",
+    "type": "link out",
+    "z": "bab7a3e1.e007a",
+    "name": "event: printing",
+    "links": [
+      "7d3cc449.27739c"
+    ],
+    "x": 815,
+    "y": 420,
+    "wires": []
+  },
+  {
+    "id": "7d3cc449.27739c",
+    "type": "link in",
+    "z": "bab7a3e1.e007a",
+    "name": "event: printing",
+    "links": [
+      "9c09a6b5.3ede88"
+    ],
+    "x": 175,
+    "y": 940,
+    "wires": [
+      [
+        "2746e3bd.075c9c"
+      ]
+    ]
+  },
+  {
+    "id": "2746e3bd.075c9c",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: printing",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "printing",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 340,
+    "y": 940,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "acd1caa4.ebccf8",
+    "type": "function",
+    "z": "bab7a3e1.e007a",
+    "name": "print job polling",
+    "func": "let printer = global.get('printer');\nlet jobId = msg.payload;\nlet jobStatus;\n\npollJob();\n\n// cancel the job after 60 seconds of not printing\nsetTimeout(()=> {\n  if (jobStatus == 'PRINTING' || jobStatus == 'PENDING') {\n    printer.setJob('', jobId, 'CANCEL');\n  }\n}, 60000);\n\nfunction pollJob() {\n  let job = printer.getJob('', jobId);\n  \n  jobStatus = job && job.status[0] || 'DISAPPEARED';\n  \n  if (jobStatus == 'PRINTED') {\n    msg.payload = job;\n    node.send(msg);\n  }\n  else if (jobStatus == 'PRINTING' || jobStatus == 'PENDING') {\n    setTimeout(pollJob, 1000);\n  }\n  else {\n    msg.payload = job;\n    node.send([null, msg]);\n  }\n}",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 340,
+    "y": 560,
+    "wires": [
+      [
+        "b5159274.547d8"
+      ],
+      [
+        "5986da8e.296c54",
+        "db56f980.876518"
+      ]
+    ]
+  },
+  {
+    "id": "b5159274.547d8",
+    "type": "link out",
+    "z": "bab7a3e1.e007a",
+    "name": "event: printed",
+    "links": [
+      "edd00a64.cc0328"
+    ],
+    "x": 815,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "edd00a64.cc0328",
+    "type": "link in",
+    "z": "bab7a3e1.e007a",
+    "name": "event: printed",
+    "links": [
+      "b5159274.547d8"
+    ],
+    "x": 175,
+    "y": 980,
+    "wires": [
+      [
+        "61200c46.984e74"
+      ]
+    ]
+  },
+  {
+    "id": "61200c46.984e74",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: printed",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "printed",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 340,
+    "y": 980,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "4d5f05a1.36c24c",
+    "type": "comment",
+    "z": "bab7a3e1.e007a",
+    "name": "dev",
+    "info": "0. [preview.jpg](http://127.0.0.1/preview.jpg)\n0. [capture.jpg](http://127.0.0.1/capture.jpg)\n0. [frontend](http://127.0.0.1/app)",
+    "x": 310,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "7ed38030.4e60a",
+    "type": "http in",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "url": "/background.png",
+    "method": "put",
+    "swaggerDoc": "",
+    "x": 120,
+    "y": 40,
+    "wires": [
+      [
+        "f42129b7.dcfef8"
+      ]
+    ]
+  },
+  {
+    "id": "f42129b7.dcfef8",
+    "type": "function",
+    "z": "fbd99c79.ab64",
+    "name": "save file",
+    "func": "let fs = global.get('fs');\n\nif (!msg.payload) {\n  sendError('No file received.');\n}\n\nfs.writeFile('/data' + msg.req.url, msg.payload, err=> {\n  if (err) {\n    sendError(err);\n  }\n  else {\n    sendSuccess();\n  }\n});\n\nfunction sendError(err) {\n  msg.statusCode = 400;\n  msg.payload = { success: false, message: err };\n  \n  node.send(msg);\n}\n\nfunction sendSuccess() {\n  msg.statusCode = 200;\n  msg.payload = { success: true, message: 'OK' };\n  \n  node.send(msg);\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "31903cd9.27d594"
+      ]
+    ]
+  },
+  {
+    "id": "31903cd9.27d594",
+    "type": "http response",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "x": 570,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "6a1caae9.9030c4",
+    "type": "http in",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "url": "/underlay.png",
+    "method": "put",
+    "swaggerDoc": "",
+    "x": 110,
+    "y": 80,
+    "wires": [
+      [
+        "f42129b7.dcfef8"
+      ]
+    ]
+  },
+  {
+    "id": "f0f50957.00e7a8",
+    "type": "http in",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "url": "/background.png",
+    "method": "get",
+    "swaggerDoc": "",
+    "x": 120,
+    "y": 120,
+    "wires": [
+      [
+        "a7ff3a08.10e508"
+      ]
+    ]
+  },
+  {
+    "id": "3e58b935.bc1be6",
+    "type": "http in",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "url": "/underlay.png",
+    "method": "get",
+    "swaggerDoc": "",
+    "x": 110,
+    "y": 160,
+    "wires": [
+      [
+        "a7ff3a08.10e508"
+      ]
+    ]
+  },
+  {
+    "id": "a7ff3a08.10e508",
+    "type": "function",
+    "z": "fbd99c79.ab64",
+    "name": "read file",
+    "func": "let fs = global.get('fs');\n\nfs.readFile(`/data${msg.req.url}`, (err, data)=> {\n  if (err) {\n    msg.statusCode = 500;\n    msg.payload = { error: err };\n    node.send([null, msg]);\n  }\n  else {\n    msg.statusCode = 200;\n    msg.headers = { \"content-type\": \"image/png\" };\n    msg.payload = data;\n    node.send(msg);\n  }\n});\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 320,
+    "y": 140,
+    "wires": [
+      [
+        "31903cd9.27d594"
+      ],
+      [
+        "ac5b5c16.bb897",
+        "31903cd9.27d594"
+      ]
+    ]
+  },
+  {
+    "id": "ac5b5c16.bb897",
+    "type": "debug",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 600,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "6eb899c7.b52e38",
+    "type": "http in",
+    "z": "bf037966.351838",
+    "name": "",
+    "url": "/slides/*",
+    "method": "get",
+    "swaggerDoc": "",
+    "x": 110,
+    "y": 360,
+    "wires": [
+      [
+        "c485a46e.8f1e48"
+      ]
+    ]
+  },
+  {
+    "id": "19eec44.ec2a63c",
+    "type": "template",
+    "z": "bf037966.351838",
+    "name": "",
+    "field": "payload",
+    "fieldType": "msg",
+    "format": "handlebars",
+    "syntax": "mustache",
+    "template": "<div ng-app=\"a\">\n<scriptsrc=\"/app/angular.min.js\"></script>\n<script src=\"/app/angular-websocket.min.js\"></script>\n<script>\nangular.module('a', ['ngWebsocket'])\n.run($websocket=> {\n let s = $websocket.$new('ws://localhost/ws');\n  \n  s.$on('$open', ()=> {\n    alert('$open');\n    s.$emit('test', {a:1});\n  });\n});\n</script>\n</div>",
+    "x": 250,
+    "y": 400,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "961b71bc.2e498",
+    "type": "http response",
+    "z": "bf037966.351838",
+    "name": "",
+    "x": 670,
+    "y": 360,
+    "wires": []
+  },
+  {
+    "id": "98daae18.3fa8c",
+    "type": "debug",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "active": false,
+    "console": "false",
+    "complete": "false",
+    "x": 610,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "db56f980.876518",
+    "type": "debug",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "active": false,
+    "console": "false",
+    "complete": "false",
+    "x": 610,
+    "y": 680,
+    "wires": []
+  },
+  {
+    "id": "bfd34411.484378",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.getDefaultPrinterName()",
+    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.getDefaultPrinterName();\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 330,
+    "y": 120,
+    "wires": [
+      [
+        "a99d9c31.2178d"
+      ]
+    ]
+  },
+  {
+    "id": "a99d9c31.2178d",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "fdbb4f18.74021",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 100,
+    "y": 120,
+    "wires": [
+      [
+        "bfd34411.484378"
+      ]
+    ]
+  },
+  {
+    "id": "6e7f4a40.6d2e14",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.printFile()",
+    "func": "let printer = global.get('printer');\n\nprinter.printFile({\n  filename: '/data/capture.jpg',\n  type: 'JPEG',\n  success: jobId=> {\n    msg.payload = jobId;\n    node.send(msg);\n  },\n  error: err=> {\n    msg.payload = err;\n    node.send(msg);\n  }\n});\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 280,
+    "y": 40,
+    "wires": [
+      [
+        "87721f59.362c3"
+      ]
+    ]
+  },
+  {
+    "id": "87721f59.362c3",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "b638ce37.56908",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 100,
+    "y": 40,
+    "wires": [
+      [
+        "6e7f4a40.6d2e14"
+      ]
+    ]
+  },
+  {
+    "id": "1610cd69.2a6563",
+    "type": "rpi-gpio out",
+    "z": "bab7a3e1.e007a",
+    "name": "Flashlight",
+    "pin": "11",
+    "set": true,
+    "level": "0",
+    "out": "out",
+    "x": 900,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "ce438c40.72e59",
+    "type": "delay",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "2",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "x": 320,
+    "y": 320,
+    "wires": [
+      [
+        "cf704ce5.aab06",
+        "aaa48eb0.0a366"
+      ]
+    ]
+  },
+  {
+    "id": "3a02ee48.3f7912",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "Flashlight On",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "1",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 730,
+    "y": 240,
+    "wires": [
+      [
+        "1610cd69.2a6563",
+        "7821c700.171188"
+      ]
+    ]
+  },
+  {
+    "id": "f850abe9.e34318",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.getJob('', msg.payload)",
+    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.getJob('', msg.payload);\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 290,
+    "y": 460,
+    "wires": [
+      [
+        "b531b1ff.b7565"
+      ]
+    ]
+  },
+  {
+    "id": "b531b1ff.b7565",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 570,
+    "y": 460,
+    "wires": []
+  },
+  {
+    "id": "222b2d40.989c52",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "1",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 460,
+    "wires": [
+      [
+        "f850abe9.e34318"
+      ]
+    ]
+  },
+  {
+    "id": "3aad526f.7fb34e",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.setJob('', msg.payload, 'CANCEL')",
+    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.setJob('', msg.payload, 'CANCEL');\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 320,
+    "y": 500,
+    "wires": [
+      [
+        "1f94e3e9.fb4c8c"
+      ]
+    ]
+  },
+  {
+    "id": "1f94e3e9.fb4c8c",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 570,
+    "y": 500,
+    "wires": []
+  },
+  {
+    "id": "9731bb8a.a7ff28",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "5",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 500,
+    "wires": [
+      [
+        "3aad526f.7fb34e"
+      ]
+    ]
+  },
+  {
+    "id": "b4fad5d0.7a6ec8",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.getSupportedJobCommands()",
+    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.getSupportedJobCommands();\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 310,
+    "y": 540,
+    "wires": [
+      [
+        "cc14bbd3.43bc78"
+      ]
+    ]
+  },
+  {
+    "id": "cc14bbd3.43bc78",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 570,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "1bd07df1.639e32",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "1",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 540,
+    "wires": [
+      [
+        "b4fad5d0.7a6ec8"
+      ]
+    ]
+  },
+  {
+    "id": "ac4d3df2.ef027",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.getPrinters()",
+    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.getPrinters();\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 290,
+    "y": 80,
+    "wires": [
+      [
+        "2b1c51f7.a4fd3e"
+      ]
+    ]
+  },
+  {
+    "id": "2b1c51f7.a4fd3e",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 550,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "9bc2e9c5.850568",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 100,
+    "y": 80,
+    "wires": [
+      [
+        "ac4d3df2.ef027"
+      ]
+    ]
+  },
+  {
+    "id": "7ea6d594.942a3c",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "Flashlight Off",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "0",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 730,
+    "y": 280,
+    "wires": [
+      [
+        "1610cd69.2a6563"
+      ]
+    ]
+  },
+  {
+    "id": "b808f1fd.8b1ef",
+    "type": "inject",
+    "z": "bab7a3e1.e007a",
+    "name": "Invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 740,
+    "wires": [
+      [
+        "88fe1eca.6cec7"
+      ]
+    ]
+  },
+  {
+    "id": "31295597.78ffea",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "camera.capture()",
+    "func": "let camera = global.get('camera');\n\ncamera\n.configSet({\n    format: 1196444237,\n    width: 800,\n    height: 600\n})\n.start()\n.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\nnode.send([null, msg]);\n    }\n});\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 250,
+    "y": 580,
+    "wires": [
+      [
+        "4ad4fd19.af4d94"
+      ],
+      [
+        "29ed5222.022dbe"
+      ]
+    ]
+  },
+  {
+    "id": "46bbc924.4d2cb8",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.printDirect()",
+    "func": "let printer = global.get('printer');\n\nprinter.printDirect({\n  data: msg.payload,\n  type: 'JPEG',\n  success: jobId=> {\n    msg.payload = jobId;\n    node.send(msg);\n  },\n  error: err=> {\n    msg.payload = err;\n    node.send(msg);\n  }\n});\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 250,
+    "y": 700,
+    "wires": [
+      [
+        "3b37a2a6.23761e"
+      ]
+    ]
+  },
+  {
+    "id": "4ad4fd19.af4d94",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "jpeg compress",
+    "func": "let sharp = global.get('sharp');\n\nlet filename = `/tmp/resin/${msg._msgid}.jpg`;\n\nsharp(msg.payload)\n  .withMetadata()\n  .jpeg()\n  .toFile(filename)\n  .then(info=> {\n    msg.payload = filename;\n    node.send(msg);\n  }, err=> {\n    msg.payload = err;\n    node.send([null, msg]);\n  });\n",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 240,
+    "y": 620,
+    "wires": [
+      [
+        "71f7a096.e1a28"
+      ]
+    ]
+  },
+  {
+    "id": "33b78028.1086c",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 580,
+    "wires": [
+      [
+        "31295597.78ffea"
+      ]
+    ]
+  },
+  {
+    "id": "3b37a2a6.23761e",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 430,
+    "y": 700,
+    "wires": []
+  },
+  {
+    "id": "71f7a096.e1a28",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "camera.stop()",
+    "func": "let camera =global.get('camera');\n\ncamera.stop(()=>{});\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 240,
+    "y": 660,
+    "wires": [
+      [
+        "46bbc924.4d2cb8"
+      ]
+    ]
+  },
+  {
+    "id": "a7387714.052f68",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.getJob()",
+    "func": "let printer = global.get('printer');\n\ntry {\n  msg.payload = printer.getJob('', msg.payload);\n}\ncatch (e) {\n  msg.payload = null;\n}\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 240,
+    "y": 740,
+    "wires": [
+      [
+        "a53dd066.c6888"
+      ]
+    ]
+  },
+  {
+    "id": "a53dd066.c6888",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "payload.status",
+    "x": 450,
+    "y": 740,
+    "wires": []
+  },
+  {
+    "id": "1e8f355b.24eceb",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "1",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 740,
+    "wires": [
+      [
+        "a7387714.052f68"
+      ]
+    ]
+  },
+  {
+    "id": "41eca5d4.333a4c",
+    "type": "trigger",
+    "z": "bf037966.351838",
+    "op1": "",
+    "op2": "",
+    "op1type": "nul",
+    "op2type": "payl",
+    "duration": "1",
+    "extend": false,
+    "units": "s",
+    "reset": "0",
+    "name": "",
+    "x": 340,
+    "y": 900,
+    "wires": [
+      [
+        "5976542c.b1485c"
+      ]
+    ]
+  },
+  {
+    "id": "1f5b79ce.6cb136",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "count 10 - 1",
+    "func": "let counter = context.get('counter') || 10;\n\nif (--counter > 0) {\n    context.set('counter', counter);\n    msg.payload = counter;\n    node.send(msg);\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 410,
+    "y": 800,
+    "wires": [
+      [
+        "41eca5d4.333a4c",
+        "91b89ca8.9b4c1"
+      ]
+    ]
+  },
+  {
+    "id": "91b89ca8.9b4c1",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "true",
+    "x": 570,
+    "y": 800,
+    "wires": []
+  },
+  {
+    "id": "1e222499.83414b",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "1",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 250,
+    "y": 800,
+    "wires": [
+      [
+        "1f5b79ce.6cb136"
+      ]
+    ]
+  },
+  {
+    "id": "5976542c.b1485c",
+    "type": "delay",
+    "z": "bf037966.351838",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "0",
+    "timeoutUnits": "milliseconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "x": 490,
+    "y": 900,
+    "wires": [
+      [
+        "1f5b79ce.6cb136"
+      ]
+    ]
+  },
+  {
+    "id": "29ed5222.022dbe",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 570,
+    "y": 580,
+    "wires": []
+  },
+  {
+    "id": "1179946a.da57ac",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "sharp test",
+    "func": "let sharp = global.get('sharp');\n\nmsg.filename = `/usr/src/app/frontend/${msg._msgid}.jpg`;\n\nsharp('/data/underlay.png')\n// .overlayWith('/data/underlay.png')\n.overlayWith('/data/capture.jpg', { top: 100, left: 350 })\n.withMetadata()\n.jpeg()\n.toFile(msg.filename)\n.then(info=> {\n  msg.payload = info;\n  node.send(msg);\n}, err=> {\n  msg.payload = err;\n  node.send([null, msg]);\n})\n/* \n(err, data, info)=> {\n  if (err) {\n    msg.payload = err;\n    node.send([null, msg]);\n  }\n  else {\n    msg.payload = data;\n    msg.info = info;\n    node.send(msg);\n  }\n});\n*/",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 220,
+    "y": 1000,
+    "wires": [
+      [
+        "69b49628.81db78"
+      ],
+      [
+        "87bae557.f37198"
+      ]
+    ]
+  },
+  {
+    "id": "7c1b27b.f444dd8",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 1000,
+    "wires": [
+      [
+        "1179946a.da57ac"
+      ]
+    ]
+  },
+  {
+    "id": "69b49628.81db78",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "true",
+    "x": 390,
+    "y": 1000,
+    "wires": []
+  },
+  {
+    "id": "87bae557.f37198",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "payload",
+    "x": 410,
+    "y": 1040,
+    "wires": []
+  },
+  {
+    "id": "4a4b1a24.1bc254",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "uuid",
+    "func": "msg.payload = b();\n\nreturn msg;\n\n// Smallest UUID generator: https://gist.github.com/jed/982883\nfunction b(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+1e3+4e3+8e3+1e11).replace(/[018]/g,b)}",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 724,
+    "y": 864,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "c485a46e.8f1e48",
+    "type": "change",
+    "z": "bf037966.351838",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "filename",
+        "pt": "msg",
+        "to": "req.params[0]",
+        "tot": "msg"
+      },
+      {
+        "t": "change",
+        "p": "filename",
+        "pt": "msg",
+        "from": "^(.*)$",
+        "fromt": "re",
+        "to": "/tmp/$1",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "headers",
+        "pt": "msg",
+        "to": "{\"content-type\": \"image/jpeg\"}",
+        "tot": "json"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 300,
+    "y": 360,
+    "wires": [
+      [
+        "e3469934.e71338"
+      ]
+    ]
+  },
+  {
+    "id": "e3469934.e71338",
+    "type": "file in",
+    "z": "bf037966.351838",
+    "name": "",
+    "filename": "",
+    "format": "utf8",
+    "x": 470,
+    "y": 360,
+    "wires": [
+      [
+        "961b71bc.2e498"
+      ]
+    ]
+  },
+  {
+    "id": "19311635.1b2efa",
+    "type": "inject",
+    "z": "bab7a3e1.e007a",
+    "name": "Invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 820,
+    "wires": [
+      [
+        "ac94c88a.770068"
+      ]
+    ]
+  },
+  {
+    "id": "4bb5cddb.fae834",
+    "type": "rpi-gpio out",
+    "z": "bab7a3e1.e007a",
+    "name": "Button LED",
+    "pin": "12",
+    "set": true,
+    "level": "0",
+    "out": "out",
+    "x": 550,
+    "y": 780,
+    "wires": []
+  },
+  {
+    "id": "78d3fc3e.29bab4",
+    "type": "delay",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "1",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "x": 320,
+    "y": 440,
+    "wires": [
+      [
+        "e496556c.cca6b8"
+      ]
+    ]
+  },
+  {
+    "id": "2ade461a.f78eda",
+    "type": "delay",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "pauseType": "rate",
+    "timeout": "1",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "5",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": true,
+    "x": 100,
+    "y": 360,
+    "wires": [
+      [
+        "254f54e9.a52f0c"
+      ]
+    ]
+  },
+  {
+    "id": "7821c700.171188",
+    "type": "delay",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "5",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "x": 560,
+    "y": 280,
+    "wires": [
+      [
+        "7ea6d594.942a3c"
+      ]
+    ]
+  }
+]
