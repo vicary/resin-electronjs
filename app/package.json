@@ -1,7 +1,7 @@
 {
-  "name": "resin-electronjs",
-  "version": "0.2.0",
-  "description": "electronJS-based resin application",
+  "name": "augusts-photobox",
+  "version": "1.0.0",
+  "description": "Photobox IoT project by August Solutions.",
   "main": "main.js",
   "scripts": {
     "dev": "NODE_ENV=development electron .",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/resin-io/resin-electronjs.git"
+    "url": "git+https://github.com/vicary/resin-electronjs.git"
   },
   "keywords": [
     "resin",
@@ -19,24 +19,24 @@
     "js"
   ],
   "dependencies": {
-    "electron": "^1.6.6",
-    "extract-zip": "=1.6.0",
+    "electron": "^1.7.6",
+    "extract-zip": "^1.6.0",
     "electron-rebuild": "^1.5.7",
     "electron-printer": "^0.0.5",
     "express": "^4.15.2",
     "cors": "^2.8.3",
-    "node-red": "^0.16.2",
-    "node-red-dashboard": "^2.3.9",
+    "node-red": "^0.17.5",
+    "node-red-dashboard": "^2.4.3",
     "node-red-contrib-tick": "^0.0.2",
     "v4l2camera": "^1.0.4",
-    "sharp": "^0.17.3"
+    "sharp": "^0.18.3"
   },
-  "author": "Carlo Maria Curinga",
+  "author": "Vicary Archangel",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/resin-io/resin-electronjs/issues"
+    "url": "https://github.com/vicary/resin-electronjs/issues"
   },
-  "homepage": "https://github.com/resin-io/resin-electronjs#readme",
+  "homepage": "https://github.com/vicary/resin-electronjs#readme",
   "jshintConfig": {
     "esversion": 6,
     "strict": true

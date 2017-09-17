@@ -197,7 +197,6 @@ module.exports = {
             title: "Photobox"
         },
         deployButton: {
-            type: "simple",
             label: "Deploy",
             icon: "/usr/src/app/.node-red/assets/favicon.ico" // or null to remove image
         },
