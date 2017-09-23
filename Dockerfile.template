@@ -1,7 +1,9 @@
 FROM resin/%%RESIN_MACHINE_NAME%%-node:8
 
 # Install other apt deps
-RUN apt-get update && apt-get install -y \
+RUN apt-get update \
+  && apt-get upgrade \
+  && apt-get install -y \
   apt-utils \
   clang \
   xserver-xorg-core \
@@ -70,7 +72,7 @@ WORKDIR /usr/src/app
 COPY ./app/package.json ./
 
 # Install npm modules for the application
-RUN JOBS=MAX npm install --unsafe-perm --production && \
+RUN JOBS=MAX npm i --unsafe-perm --production && \
 	npm cache clean -f && \
   node_modules/.bin/electron-rebuild
 
