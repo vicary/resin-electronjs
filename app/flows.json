@@ -337,7 +337,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "loop: camera.capture()",
-    "func": "let camera = global.get('camera');\nlet jpeg = global.get('jpeg');\nlet active = true;\nlet boundary = msg._msgid;\nlet res = msg.res._res;\n\n// auto close when connection closes.\nmsg.req.on('close', ()=> { active = false; });\n\n// force close on10 secs, just to be safe.\nsetTimeout(()=> { active = false }, 10000);\n\nres.set({\n    'Content-Type': `multipart/x-mixed-replace;boundary=${boundary}`,\n    'Connection': 'keep-alive',\n    'Expires': (new Date()).toString(),\n    'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',\n    'pragma': 'no-cache'\n});\n\n// if already started, skip .start()\nif (!flow.get('active')) {\n    camera.configSet({\n        format: 1196444237,\n        width: 800,\n        height: 600,\n       interval: {\n            numerator: 1,\n            denominator: 30\n        }\n    })\n    .start();\n    \n    flow.set('active', true);\n}\n\nlet capture =camera.capture.bind(camera, success=> {\n    if (success && active && flow.get('active')) {\n        let buffer = Buffer(camera.frameRaw());\n        \n        try {\n            res.write(`--${boundary}\\r\\n`);\n            res.write('Content-Type: image/jpeg\\r\\n');\n            res.write(`Content-Length: ${buffer.length}\\r\\n\\r\\n`);\n            res.write(buffer, 'binary');\n            res.write('\\r\\n');\n        }\n        catch(e) {\n            res.end();\n            throw e;\n       }\n        \n        setTimeout(capture, 100);\n    }\n    else {\n        res.end();\n    }\n});\n\ncapture();\nkeepAlive();\n\nfunction keepAlive() {\n  if (active && flow.get('active')) {\n    node.send(msg);\n    setTimeout(keepAlive, 1000);\n  }\n}",
+    "func": "let camera = global.get('camera');\nlet jpeg = global.get('jpeg');\nlet active = true;\nlet boundary = msg._msgid;\nlet res = msg.res._res;\n\n// auto close when connection closes.\nmsg.req.on('close', ()=> { active = false; });\n\n// force close on10 secs, just to be safe.\nsetTimeout(()=> { active = false }, 10000);\n\nres.set({\n    'Content-Type': `multipart/x-mixed-replace;boundary=${boundary}`,\n    'Connection': 'keep-alive',\n    'Expires': (new Date()).toString(),\n    'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',\n    'pragma': 'no-cache'\n});\n\n// if already started, skip .start()\nif (!flow.get('active')) {\n    camera.configSet({\n        format: 1196444237,\n        width: 800,\n        height: 600,\n     interval: {\n            numerator: 1,\n            denominator: 30\n        }\n    })\n    .start();\n    \n    flow.set('active', true);\n}\n\nlet capture =camera.capture.bind(camera, success=> {\n    if (success && active && flow.get('active')) {\n        let buffer = Buffer(camera.frameRaw());\n        \n        try {\n          res.write(`--${boundary}\\r\\n`);\n            res.write('Content-Type: image/jpeg\\r\\n');\n            res.write(`Content-Length: ${buffer.length}\\r\\n\\r\\n`);\n            res.write(buffer, 'binary');\n            res.write('\\r\\n');\n        }\n        catch(e) {\n            res.end();\n            throw e;\n   }\n        \n        setTimeout(capture, 100);\n    }\n    else {\n        res.end();\n    }\n});\n\ncapture();\nkeepAlive();\n\nfunction keepAlive() {\n  if (active && flow.get('active')) {\n    node.send(msg);\n    setTimeout(keepAlive, 1000);\n  }\n}",
     "outputs": "1",
     "noerr": 0,
     "x": 360,
@@ -377,7 +377,7 @@
   },
   {
     "id": "a3d0055e.fcc2f8",
-    "type": "websocket in",
+    "type": "websocketin",
     "z": "bab7a3e1.e007a",
     "name": "",
     "server": "9c520008.abdbc",
@@ -462,7 +462,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "random file in directory `msg.filename`",
-    "func": "let fs = global.get('fs');\n\nfs.readdir(msg.filename, (err, files)=> {\n    if (err) return;\n\n    let file = files[Math.round(Math.random() * files.length)];\n    \n    msg.payload = { slideUrl: file };\n    \n    node.send(msg);\n});\n",
+    "func": "let fs = global.get('fs');\n\nfs.readdir(msg.filename, (err, files)=> {\nif (err) return;\n\n    let file = files[Math.round(Math.random() * files.length)];\n    \n    msg.payload = { slideUrl: file };\n    \n    node.send(msg);\n});\n",
     "outputs": 1,
     "noerr": 0,
     "x": 410,
@@ -478,7 +478,7 @@
     "id": "dc9bbbf4.fcd908",
     "type": "change",
     "z": "bab7a3e1.e007a",
-    "name": "msg.filename = /data/slides",
+    "name": "msg.filename= /data/slides",
     "rules": [
       {
         "t": "set",
@@ -537,7 +537,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "camera.capture()",
-    "func": "let camera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
+    "func": "letcamera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
     "outputs": "2",
     "noerr": 0,
     "x": 530,
@@ -854,7 +854,7 @@
     "name": "Button Press",
     "pin": "13",
     "intype": "up",
-    "debounce": "1000",
+    "debounce": "200",
     "read": true,
     "x": 110,
     "y": 780,
@@ -896,7 +896,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "print to default printer",
-    "func": "let printer = global.get('printer');\n\nif (printer.getDefaultPrinterName()) {\n  printer.printFile({\n    filename: msg.filename,\n    type: 'JPEG',\n    success: jobId=> {\n      msg.payload = jobId;\n      node.send(msg);\n    },\n    error: err=> {\n      msg.payload = err;\n      node.send([null, msg]);\n    }\n  });\n}\nelse {\n  msg.payload = 'Default printer not found.';\n  node.send([null, msg]);\n}\n",
+    "func": "let printer = global.get('printer');\n\nif (printer.getDefaultPrinterName()) {\n  printer.printFile({\n    filename: msg.filename,\n    type: 'JPEG',\n    success: jobId=> {\n      msg.payload = jobId;\n      node.send(msg);\n    },\n    error: err=> {\n      msg.payload = err;\n node.send([null, msg]);\n    }\n  });\n}\nelse {\n  msg.payload = 'Default printer not found.';\n  node.send([null, msg]);\n}\n",
     "outputs": "2",
     "noerr": 0,
     "x": 360,
@@ -917,15 +917,13 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "compose printing image",
-    "func": "let sharp = global.get('sharp');\n\nmsg.filename = `/tmp/${msg._msgid}.jpg`;\n\n// sharp(null, {\n//   create: {\n//     width: 1200,\n//     height: 800,\n//     channels: 4,\n//     background: { r: 255, g: 255, b: 255, alpha: 255 }\n//   }\n// })\n// .overlayWith('/data/underlay.png')\nsharp('/data/underlay.png')\n.overlayWith('/data/capture.jpg', { top: 100, left: 350 })\n.withMetadata()\n.jpeg()\n.toFile(msg.filename)\n.then(info=> {\n  msg.payload = info;\n  node.send(msg);\n}, err=> {\n  msg.payload = err;\n  node.send([null, msg]);\n});\n",
+    "func": "let sharp = global.get('sharp');\n\nmsg.filename = `/tmp/${msg._msgid}.jpg`;\n\n// sharp(null, {\n//   create: {\n//     width: 1200,\n//  height: 800,\n//     channels: 4,\n//     background: { r: 255, g: 255, b: 255, alpha: 255 }\n//   }\n// })\n// .overlayWith('/data/underlay.png')\nsharp('/data/underlay.png')\n.overlayWith('/data/capture.jpg', { top: 100, left: 350 })\n.resize(1740, 1170)\n.withMetadata()\n.jpeg()\n.toFile(msg.filename)\n.then(info=> {\n  msg.payload = info;\n  node.send(msg);\n}, err=> {\n  msg.payload = err;\n  node.send([null, msg]);\n});\n",
     "outputs": "2",
     "noerr": 0,
     "x": 370,
     "y": 480,
     "wires": [
-      [
-        "524f77f1.0a0238"
-      ],
+      [],
       [
         "5986da8e.296c54"
       ]
@@ -1011,7 +1009,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "print job polling",
-    "func": "let printer = global.get('printer');\nlet jobId = msg.payload;\nlet jobStatus;\n\npollJob();\n\n// cancel the job after 60 seconds of not printing\nsetTimeout(()=> {\n  if (jobStatus == 'PRINTING' || jobStatus == 'PENDING') {\n    printer.setJob('', jobId, 'CANCEL');\n  }\n}, 60000);\n\nfunction pollJob() {\n  let job = printer.getJob('', jobId);\n  \n  jobStatus = job && job.status[0] || 'DISAPPEARED';\n  \n  if (jobStatus == 'PRINTED') {\n    msg.payload = job;\n    node.send(msg);\n  }\n  else if (jobStatus == 'PRINTING' || jobStatus == 'PENDING') {\n    setTimeout(pollJob, 1000);\n  }\n  else {\n    msg.payload = job;\n    node.send([null, msg]);\n  }\n}",
+    "func": "let printer = global.get('printer');\nlet jobId = msg.payload;\nlet jobStatus;\n\npollJob();\n\n// cancel the job after 60 seconds of not printing\nsetTimeout(()=> {\n  if (jobStatus == 'PRINTING' || jobStatus == 'PENDING') {\n    printer.setJob('',jobId, 'CANCEL');\n  }\n}, 60000);\n\nfunction pollJob() {\n  let job = printer.getJob('', jobId);\n  \n  jobStatus = job && job.status[0] || 'DISAPPEARED';\n  \n  if (jobStatus == 'PRINTED') {\n    msg.payload = job;\n    node.send(msg);\n  }\n  else if (jobStatus == 'PRINTING' || jobStatus == 'PENDING') {\n    setTimeout(pollJob, 1000);\n  }\n  else {\n    msg.payload = job;\n    node.send([null, msg]);\n  }\n}",
     "outputs": "2",
     "noerr": 0,
     "x": 340,
@@ -1119,7 +1117,8 @@
     "y": 80,
     "wires": [
       [
-        "31903cd9.27d594"
+        "31903cd9.27d594",
+        "2cc6b431.69edfc"
       ]
     ]
   },
@@ -1470,7 +1469,7 @@
     "z": "bf037966.351838",
     "name": "",
     "topic": "",
-    "payload": "1",
+    "payload": "2",
     "payloadType": "num",
     "repeat": "",
     "crontab": "",
@@ -1527,53 +1526,6 @@
     "wires": [
       [
         "3aad526f.7fb34e"
-      ]
-    ]
-  },
-  {
-    "id": "b4fad5d0.7a6ec8",
-    "type": "function",
-    "z": "bf037966.351838",
-    "name": "printer.getSupportedJobCommands()",
-    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.getSupportedJobCommands();\n\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "x": 310,
-    "y": 540,
-    "wires": [
-      [
-        "cc14bbd3.43bc78"
-      ]
-    ]
-  },
-  {
-    "id": "cc14bbd3.43bc78",
-    "type": "debug",
-    "z": "bf037966.351838",
-    "name": "",
-    "active": true,
-    "console": "false",
-    "complete": "false",
-    "x": 570,
-    "y": 540,
-    "wires": []
-  },
-  {
-    "id": "1bd07df1.639e32",
-    "type": "inject",
-    "z": "bf037966.351838",
-    "name": "",
-    "topic": "",
-    "payload": "1",
-    "payloadType": "num",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 90,
-    "y": 540,
-    "wires": [
-      [
-        "b4fad5d0.7a6ec8"
       ]
     ]
   },
@@ -1675,7 +1627,7 @@
     "type": "function",
     "z": "bf037966.351838",
     "name": "camera.capture()",
-    "func": "let camera = global.get('camera');\n\ncamera\n.configSet({\n    format: 1196444237,\n    width: 800,\n    height: 600\n})\n.start()\n.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\nnode.send([null, msg]);\n    }\n});\n",
+    "func": "let camera = global.get('camera');\n\ncamera\n.configSet({\n    format:1196444237,\n    width: 800,\n    height: 600\n})\n.start()\n.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\nnode.send([null, msg]);\n    }\n});\n",
     "outputs": "2",
     "noerr": 0,
     "x": 250,
@@ -1710,7 +1662,7 @@
     "type": "function",
     "z": "bf037966.351838",
     "name": "jpeg compress",
-    "func": "let sharp = global.get('sharp');\n\nlet filename = `/tmp/resin/${msg._msgid}.jpg`;\n\nsharp(msg.payload)\n  .withMetadata()\n  .jpeg()\n  .toFile(filename)\n  .then(info=> {\n    msg.payload = filename;\n    node.send(msg);\n  }, err=> {\n    msg.payload = err;\n    node.send([null, msg]);\n  });\n",
+    "func": "let sharp = global.get('sharp');\n\nlet filename = `/tmp/resin/${msg._msgid}.jpg`;\n\nsharp(msg.payload)\n  .withMetadata()\n  .jpeg()\n .toFile(filename)\n  .then(info=> {\n    msg.payload = filename;\n    node.send(msg);\n  }, err=> {\n    msg.payload = err;\n    node.send([null, msg]);\n  });\n",
     "outputs": 1,
     "noerr": 0,
     "x": 240,
@@ -2151,6 +2103,154 @@
     "wires": [
       [
         "7ea6d594.942a3c"
+      ]
+    ]
+  },
+  {
+    "id": "b4fad5d0.7a6ec8",
+    "type": "function",
+    "z": "bf037966.351838",
+    "name": "printer.getSupportedJobCommands()",
+    "func": "let printer = global.get('printer');\n\nmsg.payload = printer.getSupportedJobCommands();\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 310,
+    "y": 540,
+    "wires": [
+      [
+        "cc14bbd3.43bc78"
+      ]
+    ]
+  },
+  {
+    "id": "cc14bbd3.43bc78",
+    "type": "debug",
+    "z": "bf037966.351838",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 570,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "1bd07df1.639e32",
+    "type": "inject",
+    "z": "bf037966.351838",
+    "name": "",
+    "topic": "",
+    "payload": "1",
+    "payloadType": "num",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 540,
+    "wires": [
+      [
+        "b4fad5d0.7a6ec8"
+      ]
+    ]
+  },
+  {
+    "id": "b89dc437.45b018",
+    "type": "change",
+    "z": "bab7a3e1.e007a",
+    "name": "event: reload",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "reload",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 330,
+    "y": 1020,
+    "wires": [
+      [
+        "58fb4496.ddd6cc"
+      ]
+    ]
+  },
+  {
+    "id": "189f1c64.c33c94",
+    "type": "link in",
+    "z": "bab7a3e1.e007a",
+    "name": "event: reload",
+    "links": [
+      "105f105f.f1506"
+    ],
+    "x": 175,
+    "y": 1020,
+    "wires": [
+      [
+        "b89dc437.45b018"
+      ]
+    ]
+  },
+  {
+    "id": "bdd2dcae.e0bfe",
+    "type": "inject",
+    "z": "bab7a3e1.e007a",
+    "name": "Invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 90,
+    "y": 1020,
+    "wires": [
+      [
+        "b89dc437.45b018"
+      ]
+    ]
+  },
+  {
+    "id": "105f105f.f1506",
+    "type": "link out",
+    "z": "fbd99c79.ab64",
+    "name": "update: images",
+    "links": [
+      "189f1c64.c33c94"
+    ],
+    "x": 675,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "2cc6b431.69edfc",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "@=now()",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "",
+        "tot": "date"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 580,
+    "y": 40,
+    "wires": [
+      [
+        "105f105f.f1506"
       ]
     ]
   }
