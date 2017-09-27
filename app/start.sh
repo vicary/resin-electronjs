@@ -12,7 +12,7 @@ mkdir -p /data/node-red/nodes || true
 # Defaults to the repo flow for new devices
 if [ ! -f /data/node-red/user/flows.json ]
 then
-  cp /usr/src/app/flows.json /data/node-red/user/
+  cp /usr/src/app/flows-default.json /data/node-red/user/flows.json
 fi
 
 # start cups daemon
