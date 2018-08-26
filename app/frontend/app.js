@@ -41,11 +41,11 @@ app.config(($routeProvider)=> {
       /**
        * Display countdown and tell users to smile.
        */
-      controller: function ShootController($websocket, $timeout) {
+      controller: function ShootController($websocket, $timeout, $scope) {
         let socket = $websocket.$new(wsConfig);
         let ctx = this;
 
-        ctx.counter = 5;
+        ctx.counter = 10;
         $timeout(function countdown() {
           if (--ctx.counter) {
             $timeout(countdown, 1000);
@@ -55,6 +55,9 @@ app.config(($routeProvider)=> {
             socket.$emit('capture');
           }
         }, 1000);
+
+        var tm = $timeout(()=> {location.hash = '!/preview';}, 8000);
+        $scope.$on('$destroy', ()=> { $timeout.cancel(tm) })
       },
       controllerAs: '$controller',
       templateUrl: 'shoot.html'

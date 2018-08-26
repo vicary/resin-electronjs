@@ -15,6 +15,10 @@ then
   cp /usr/src/app/flows-default.json /data/node-red/user/flows.json
 fi
 
+# tmpfs for photo processing
+mkdir /dev/shm/tmp
+ln -s /dev/shm/tmp /tmp/photobox
+
 # start cups daemon
 #/use/sbin/cupsd
 #systemctl enable cups && systemctl start cups

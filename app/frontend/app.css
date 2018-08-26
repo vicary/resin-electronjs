@@ -12,6 +12,7 @@ html, body, div[ng-view], div[ng-view] > div {
 
 body {
   background: #fff url(/background.png) no-repeat center center;
+  background-size: cover;
 }
 
 .foreground::before {
