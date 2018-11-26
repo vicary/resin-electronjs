@@ -1,8 +1,8 @@
-FROM resin/%%RESIN_MACHINE_NAME%%-node:8
+FROM resin/%%RESIN_MACHINE_NAME%%-node:9-slim
 
 # Install other apt deps
-RUN apt-get update \
-  && apt-get upgrade \
+RUN apt-get -qq update \
+  && apt-get -qq upgrade \
   && apt-get install -y \
   apt-utils \
   clang \
@@ -10,6 +10,9 @@ RUN apt-get update \
   xserver-xorg-input-all \
   xserver-xorg-video-fbdev \
   xorg \
+  libxcb-image0 \
+  libxcb-util0 \
+  xdg-utils \
   libdbus-1-dev \
   libgtk2.0-dev \
   libnotify-dev \
@@ -21,7 +24,6 @@ RUN apt-get update \
   libxtst-dev \
   libxss1 \
   libnss3-dev \
-  fluxbox \
   libsmbclient \
   libssh-4 \
   fbset \
@@ -34,33 +36,15 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Compile gutenprint 5.2.13 from source after removing printer-driver-gutenprint@5.2.10
+# Compile gutenprint 5.3.1 from source after removing printer-driver-gutenprint@5.2.10
 RUN apt-get autoremove -y printer-driver-gutenprint \
-  && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.13/gutenprint-5.2.13.tar.bz2 | tar xj \
-  && cd gutenprint-5.2.13 \
+  && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.3/5.3.1/gutenprint-5.3.1.tar.xz | tar xJ \
+  && cd gutenprint-5.3.1 \
   && ./configure --enable-cups-ppds \
   && make clean && make && make install \
   && cd .. \
-  && rm -rf gutenprint-5.2.13
+  && rm -rf gutenprint-5.3.1
 
-# libMitsuD70ImageReProcess
-RUN apt-get update && apt-get install -y libusb-1.0-0-dev \
-  && git clone --depth=1 git://git.shaftnet.org/selphy_print.git \
-  && cd selphy_print \
-  && make clean && make && make install \
-  && cd lib70x \
-  && make clean && make && make install \
-  && cd ../.. \
-  && rm -rf selphy_print \
-  && echo '/usr/local/lib' >> /etc/ld.so.conf.d/local.conf \
-  && ldconfig \
-  && apt-get autoremove -y libusb-1.0-0-dev \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
-# Set Xorg and FLUXBOX preferences
-RUN mkdir ~/.fluxbox
-RUN echo "xset s off" > ~/.fluxbox/startup && echo "xserver-command=X -s 0 dpms" >> ~/.fluxbox/startup
 RUN echo "#!/bin/bash" > /etc/X11/xinit/xserverrc \
   && echo "" >> /etc/X11/xinit/xserverrc \
   && echo 'exec /usr/bin/X -s 0 dpms -nocursor -nolisten tcp "$@"' >> /etc/X11/xinit/xserverrc
@@ -72,7 +56,7 @@ WORKDIR /usr/src/app
 COPY ./app/package.json ./
 
 # Install npm modules for the application
-RUN JOBS=MAX npm i --unsafe-perm --production && \
+RUN JOBS=MAX npm ci && \
 	npm cache clean -f && \
   node_modules/.bin/electron-rebuild
 
