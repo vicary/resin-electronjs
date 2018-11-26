@@ -3,7 +3,7 @@ FROM resin/%%RESIN_MACHINE_NAME%%-node:9-slim
 # Install other apt deps
 RUN apt-get -qq update \
   && apt-get -qq upgrade \
-  && apt-get install -y \
+  && apt-get -qq install \
   apt-utils \
   clang \
   xserver-xorg-core \
@@ -37,8 +37,8 @@ RUN apt-get -qq update \
   && rm -rf /var/lib/apt/lists/*
 
 # Compile gutenprint 5.3.1 from source after removing printer-driver-gutenprint@5.2.10
-RUN apt-get autoremove -y printer-driver-gutenprint \
-  && wget -qO- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.3/5.3.1/gutenprint-5.3.1.tar.xz | tar xJ \
+RUN apt-get -qq autoremove printer-driver-gutenprint \
+  && curl -sL https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.3/5.3.1/gutenprint-5.3.1.tar.xz | tar xJ \
   && cd gutenprint-5.3.1 \
   && ./configure --enable-cups-ppds \
   && make clean && make && make install \
