@@ -38,14 +38,12 @@ RUN apt-get -qq update \
 
 # Compile gutenprint 5.3.1 from source after removing printer-driver-gutenprint@5.2.10
 RUN apt-get -qq autoremove printer-driver-gutenprint \
-  && apt-get -qq install wget \
-  && curl -sL https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.3/5.3.1/gutenprint-5.3.1.tar.xz | tar xJ \
+  && wget -O- https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.3/5.3.1/gutenprint-5.3.1.tar.xz | tar xJ \
   && cd gutenprint-5.3.1 \
   && ./configure --enable-cups-ppds \
   && make clean && make && make install \
   && cd .. \
-  && rm -rf gutenprint-5.3.1 \
-  && apt-get -qq autoremove wget
+  && rm -rf gutenprint-5.3.1
 
 RUN echo "#!/bin/bash" > /etc/X11/xinit/xserverrc \
   && echo "" >> /etc/X11/xinit/xserverrc \
