@@ -27,7 +27,7 @@
     "node-red": "^0.19.5",
     "node-red-contrib-tick": "^0.0.2",
     "v4l2camera": "^1.0.4",
-    "sharp": "^0.21.0"
+    "sharp": "^0.17.0"
   },
   "author": "Vicary Archangel",
   "license": "Apache-2.0",
