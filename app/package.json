@@ -19,7 +19,7 @@
     "js"
   ],
   "dependencies": {
-    "electron": "~3",
+    "electron": "~1.7.9",
     "electron-rebuild": "~1.8",
     "printer": "^0.2.2",
     "express": "^4.16.4",
