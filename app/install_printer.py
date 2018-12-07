@@ -8,10 +8,10 @@ devices = conn.getDevices()
 usb_devices = [device_name for device_name in devices if 'usb' in device_name.lower()]
 
 if len(usb_devices):
-    device_name = usb_devices[0]
+  device_name = usb_devices[0]
 else:
-    print 'No USB printers found'
-    exit(1)
+  print 'No USB printers found'
+  exit(1)
 
 printer_name = devices[device_name]['device-info'].replace(' ', '-')
 
