@@ -180,7 +180,7 @@ module.exports = {
         fs: require('fs'),
         camera: new require('v4l2camera').Camera('/dev/video0'),
         sharp: require('sharp'),
-        printer: require('electron-printer')
+        printer: require('printer'),
     },
 
     // The following property can be used to order the categories in the editor
