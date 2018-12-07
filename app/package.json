@@ -21,7 +21,7 @@
   "dependencies": {
     "electron": "^3.0.0",
     "extract-zip": "^1.6.0",
-    "node-printer": "^0.2.2",
+    "printer": "^0.2.2",
     "express": "^4.15.2",
     "cors": "^2.8.3",
     "node-red": "^0.17.5",
