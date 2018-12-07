@@ -56,10 +56,10 @@ WORKDIR /usr/src/app
 COPY ./app/package.json ./
 
 # Install npm modules for the application
-RUN JOBS=MAX npm i && \
+RUN JOBS=MAX NODE_ENV=production npm i && \
 	npm cache clean -f && \
-  rm -rf /tmp/* && \
-  node_modules/.bin/electron-rebuild
+  rm -rf /tmp/*
+RUN node_modules/.bin/electron-rebuild
 
 # Move app to filesystem
 COPY ./app ./
