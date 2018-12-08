@@ -24,7 +24,7 @@ const { Camera } = require('v4l2camera'); //.Camera('/dev/video0'),
 const sharp = require('sharp');
 const printer = require('printer');
 
-let camrea;
+let camera;
 
 while (!camera) {
     try {
