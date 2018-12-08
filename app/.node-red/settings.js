@@ -18,6 +18,23 @@
 // to make it available:
 //var fs = require("fs");
 
+const os = require('os');
+const fs = require('fs');
+const { Camera } = require('v4l2camera'); //.Camera('/dev/video0'),
+const sharp = require('sharp');
+const printer = require('printer');
+
+let camrea;
+
+while (!camera) {
+    try {
+        camera = new Camera('/dev/video0');
+    }
+    catch (e) {
+        console.error(e);
+    }
+}
+
 module.exports = {
     // the tcp port that the Node-RED web server is listening on
     uiPort: process.env.PORT || 80,
@@ -175,12 +192,12 @@ module.exports = {
     //    context.global.os
 
     functionGlobalContext: {
-        process: process,
-        os: require('os'),
-        fs: require('fs'),
-        camera: new require('v4l2camera').Camera('/dev/video0'),
-        sharp: require('sharp'),
-        printer: require('printer'),
+        process,
+        os,
+        fs,
+        camera,
+        sharp,
+        printer,
     },
 
     // The following property can be used to order the categories in the editor
