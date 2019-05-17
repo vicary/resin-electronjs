@@ -43,23 +43,24 @@ app.config($routeProvider => {
        */
       controller: function ShootController($websocket, $timeout, $scope) {
         const socket = $websocket.$new(wsConfig);
+        const timeLimit = Date.now() + 10800;
+        const countdown = () => {
+          const remainder = timeLimit - Date.now();
 
-        this.counter = 8;
-        $timeout(function countdown() {
-          if (--this.counter) {
-            $timeout(countdown, 1000);
-
-            if (this.counter === 5) {
-              socket.$emit('capture');
-            }
+          if (remainder > 0) {
+            this.counter = Math.round(remainder / 1000);
+            $timeout(countdown, 500);
           }
           else {
             delete this.counter;
+            socket.$emit('capture');
           }
-        }, 1000);
+        };
 
-        var tm = $timeout(() => { location.hash = '!/preview'; }, 8000);
-        $scope.$on('$destroy', () => { $timeout.cancel(tm) })
+        $timeout(countdown, 500);
+
+        const tmId = $timeout(() => { location.hash = '!/preview'; }, 15000);
+        $scope.$on('$destroy', () => { $timeout.cancel(tmId); });
       },
       controllerAs: '$controller',
       templateUrl: 'shoot.html'
