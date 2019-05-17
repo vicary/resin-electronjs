@@ -2,7 +2,9 @@
   {
     "id": "bab7a3e1.e007a",
     "type": "tab",
-    "label": "Shoot"
+    "label": "Main",
+    "disabled": false,
+    "info": ""
   },
   {
     "id": "bf037966.351838",
@@ -446,9 +448,7 @@
     "x": 100,
     "y": 600,
     "wires": [
-      [
-        "8cc240dc.1d6f9"
-      ]
+      []
     ]
   },
   {
@@ -504,15 +504,15 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "camera.capture()",
-    "func": "let camera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
+    "func": "const camera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success => {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
     "outputs": "2",
     "noerr": 0,
     "x": 530,
     "y": 320,
     "wires": [
       [
-        "11cb4026.04bdf",
-        "7ea6d594.942a3c"
+        "7ea6d594.942a3c",
+        "609f8f3f.6a654"
       ],
       [
         "5986da8e.296c54"
@@ -674,25 +674,6 @@
     "wires": []
   },
   {
-    "id": "11cb4026.04bdf",
-    "type": "function",
-    "z": "bab7a3e1.e007a",
-    "name": "write: /data/capture.jpg",
-    "func": "const fs = global.get('fs');\n\nfs.writeFile('/data/capture.jpg', msg.payload, (err)=> {\n    if (err) {\n        msg.payload = err;\n        node.send([null, msg]);\n    }\n    else {\n        node.send(msg);\n    }\n});\n",
-    "outputs": "2",
-    "noerr": 0,
-    "x": 550,
-    "y": 360,
-    "wires": [
-      [
-        "9d948153.a907a"
-      ],
-      [
-        "5986da8e.296c54"
-      ]
-    ]
-  },
-  {
     "id": "7c426567.5841fc",
     "type": "link out",
     "z": "bab7a3e1.e007a",
@@ -754,6 +735,7 @@
     "name": "",
     "filename": "/data/capture.jpg",
     "format": "",
+    "sendError": false,
     "x": 350,
     "y": 80,
     "wires": [
@@ -782,7 +764,7 @@
     "id": "a1a45c90.e52ea",
     "type": "change",
     "z": "bab7a3e1.e007a",
-    "name": "",
+    "name": "content-type: image/jpeg",
     "rules": [
       {
         "t": "set",
@@ -797,7 +779,7 @@
     "from": "",
     "to": "",
     "reg": false,
-    "x": 350,
+    "x": 370,
     "y": 120,
     "wires": [
       [
@@ -810,7 +792,7 @@
     "type": "http response",
     "z": "bab7a3e1.e007a",
     "name": "",
-    "x": 530,
+    "x": 590,
     "y": 120,
     "wires": []
   },
@@ -870,12 +852,10 @@
     "y": 520,
     "wires": [
       [
-        "acd1caa4.ebccf8",
-        "98daae18.3fa8c"
+        "acd1caa4.ebccf8"
       ],
       [
-        "5986da8e.296c54",
-        "98daae18.3fa8c"
+        "5986da8e.296c54"
       ]
     ]
   },
@@ -891,12 +871,10 @@
     "y": 480,
     "wires": [
       [
-        "524f77f1.0a0238",
-        "f87a9fd8.6e696"
+        "524f77f1.0a0238"
       ],
       [
-        "5986da8e.296c54",
-        "98daae18.3fa8c"
+        "5986da8e.296c54"
       ]
     ]
   },
@@ -1072,24 +1050,7 @@
     "y": 80,
     "wires": [
       [
-        "f42129b7.dcfef8"
-      ]
-    ]
-  },
-  {
-    "id": "f42129b7.dcfef8",
-    "type": "function",
-    "z": "fbd99c79.ab64",
-    "name": "save file",
-    "func": "let fs = global.get('fs');\n\nif (!msg.payload) {\n  sendError('No file received.');\n}\n\nfs.writeFile('/data' + msg.req.url, msg.payload, err=> {\n  if (err) {\n    sendError(err);\n  }\n  else {\n    sendSuccess();\n  }\n});\n\nfunction sendError(err) {\n  msg.statusCode = 400;\n  msg.payload = { success: false, message: err };\n  \n  node.send(msg);\n}\n\nfunction sendSuccess() {\n  msg.statusCode = 200;\n  msg.payload = { success: true, message: 'OK' };\n  \n  node.send(msg);\n}\n",
-    "outputs": 1,
-    "noerr": 0,
-    "x": 320,
-    "y": 120,
-    "wires": [
-      [
-        "31903cd9.27d594",
-        "2cc6b431.69edfc"
+        "d31acfa4.d893d"
       ]
     ]
   },
@@ -1098,8 +1059,8 @@
     "type": "http response",
     "z": "fbd99c79.ab64",
     "name": "",
-    "x": 570,
-    "y": 120,
+    "x": 910,
+    "y": 180,
     "wires": []
   },
   {
@@ -1114,7 +1075,7 @@
     "y": 120,
     "wires": [
       [
-        "f42129b7.dcfef8"
+        "d31acfa4.d893d"
       ]
     ]
   },
@@ -1130,7 +1091,7 @@
     "y": 160,
     "wires": [
       [
-        "a7ff3a08.10e508"
+        "308eb453.6bfd2c"
       ]
     ]
   },
@@ -1146,41 +1107,9 @@
     "y": 200,
     "wires": [
       [
-        "a7ff3a08.10e508"
+        "308eb453.6bfd2c"
       ]
     ]
-  },
-  {
-    "id": "a7ff3a08.10e508",
-    "type": "function",
-    "z": "fbd99c79.ab64",
-    "name": "read file",
-    "func": "let fs = global.get('fs');\n\nfs.readFile(`/data${msg.req.url}`, (err, data)=> {\n  if (err) {\n    msg.statusCode = 500;\n    msg.payload = { error: err };\n    node.send([null, msg]);\n  }\n  else {\n    msg.statusCode = 200;\n    msg.headers = { \"content-type\": \"image/png\" };\n    msg.payload = data;\n    node.send(msg);\n  }\n});\n",
-    "outputs": "2",
-    "noerr": 0,
-    "x": 320,
-    "y": 180,
-    "wires": [
-      [
-        "31903cd9.27d594"
-      ],
-      [
-        "ac5b5c16.bb897",
-        "31903cd9.27d594"
-      ]
-    ]
-  },
-  {
-    "id": "ac5b5c16.bb897",
-    "type": "debug",
-    "z": "fbd99c79.ab64",
-    "name": "",
-    "active": true,
-    "console": "false",
-    "complete": "false",
-    "x": 600,
-    "y": 160,
-    "wires": []
   },
   {
     "id": "6eb899c7.b52e38",
@@ -1221,18 +1150,6 @@
     "name": "",
     "x": 670,
     "y": 360,
-    "wires": []
-  },
-  {
-    "id": "98daae18.3fa8c",
-    "type": "debug",
-    "z": "bab7a3e1.e007a",
-    "name": "",
-    "active": true,
-    "console": "false",
-    "complete": "false",
-    "x": 610,
-    "y": 520,
     "wires": []
   },
   {
@@ -2194,8 +2111,8 @@
     "links": [
       "189f1c64.c33c94"
     ],
-    "x": 675,
-    "y": 80,
+    "x": 795,
+    "y": 60,
     "wires": []
   },
   {
@@ -2210,6 +2127,16 @@
         "pt": "msg",
         "to": "",
         "tot": "date"
+      },
+      {
+        "t": "delete",
+        "p": "req",
+        "pt": "msg"
+      },
+      {
+        "t": "delete",
+        "p": "res",
+        "pt": "msg"
       }
     ],
     "action": "",
@@ -2217,8 +2144,8 @@
     "from": "",
     "to": "",
     "reg": false,
-    "x": 580,
-    "y": 80,
+    "x": 680,
+    "y": 60,
     "wires": [
       [
         "105f105f.f1506"
@@ -2251,83 +2178,6 @@
     "wires": []
   },
   {
-    "id": "73f305fb.63fb9c",
-    "type": "function",
-    "z": "fbd99c79.ab64",
-    "name": "image underlay",
-    "func": "const sharp = global.get('sharp');\n\nsharp.cache(false);\n\n// // Proportional to selphy's original size: 1740 x 1170\n// sharp({ create: {\n//   width: 1160,\n//   height: 780,\n//   channels: 4,\n//   background: { r: 255, g: 255, b: 255 }\n// } })\n//   .composite([\n//     {\n//       input: \"/data/capture.jpg\",\n//     },\n//     {\n//       input: \"/data/underlay.png\",\n//     }\n//   ])\n//   .jpeg()\n//   .toBuffer()\n//   .then(buffer => {\n//     msg.headers = { \"Content-Type\": \"image/jpeg\" };\n//     msg.payload = buffer;\n//     node.send(msg);\n//   }, err=> {\n//     msg.payload = err;\n//     node.send([null, msg]);\n//   });\n\nconst onError = ({ code, message }) => {\n  msg.statusCode = 500;\n  msg.payload = `[${err.code}] ${err.message}`;\n  node.send([null, msg]);\n}\n\n// Sharp 0.17.x\nsharp(null, {\n  create: {\n    width: 1160,\n    height: 780,\n    channels: 4,\n    background: { r: 255, g: 255, b: 255 },\n  }\n})\n.overlayWith(\"/data/capture.jpg\")\n.jpeg()\n.toBuffer()\n.then(\n  data => {\n    sharp(data)\n      .overlayWith(\"/data/underlay.png\")\n      .jpeg()\n      .toBuffer()\n      .then(\n        data => {\n          msg.headers = { \"content-type\": \"image/jpeg\" };\n          msg.payload = data;\n          node.send(msg);\n        },\n        onError\n      );\n  },\n  onError\n);\n",
-    "outputs": "2",
-    "noerr": 0,
-    "x": 340,
-    "y": 280,
-    "wires": [
-      [
-        "72518fe8.91701"
-      ],
-      [
-        "72518fe8.91701"
-      ]
-    ]
-  },
-  {
-    "id": "8c5f640f.f77748",
-    "type": "http in",
-    "z": "fbd99c79.ab64",
-    "name": "",
-    "url": "/result.jpg",
-    "method": "get",
-    "upload": false,
-    "swaggerDoc": "",
-    "x": 100,
-    "y": 280,
-    "wires": [
-      [
-        "73f305fb.63fb9c"
-      ]
-    ]
-  },
-  {
-    "id": "72518fe8.91701",
-    "type": "http response",
-    "z": "fbd99c79.ab64",
-    "name": "",
-    "x": 570,
-    "y": 280,
-    "wires": []
-  },
-  {
-    "id": "f87a9fd8.6e696",
-    "type": "debug",
-    "z": "bab7a3e1.e007a",
-    "name": "",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "complete": "filename",
-    "x": 620,
-    "y": 480,
-    "wires": []
-  },
-  {
-    "id": "6bed6de6.1015a4",
-    "type": "inject",
-    "z": "bab7a3e1.e007a",
-    "name": "Invoke",
-    "topic": "",
-    "payload": "",
-    "payloadType": "date",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 130,
-    "y": 480,
-    "wires": [
-      [
-        "e496556c.cca6b8"
-      ]
-    ]
-  },
-  {
     "id": "9d948153.a907a",
     "type": "delay",
     "z": "bab7a3e1.e007a",
@@ -2347,6 +2197,288 @@
     "wires": [
       [
         "7c426567.5841fc"
+      ]
+    ]
+  },
+  {
+    "id": "609f8f3f.6a654",
+    "type": "file",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "filename": "/data/capture.jpg",
+    "appendNewline": false,
+    "createDir": true,
+    "overwriteFile": "true",
+    "encoding": "none",
+    "x": 530,
+    "y": 360,
+    "wires": [
+      [
+        "9d948153.a907a"
+      ]
+    ]
+  },
+  {
+    "id": "2124a706.032cd8",
+    "type": "catch",
+    "z": "bab7a3e1.e007a",
+    "name": "Return to home on errors",
+    "scope": [
+      "609f8f3f.6a654"
+    ],
+    "uncaught": false,
+    "x": 770,
+    "y": 80,
+    "wires": [
+      [
+        "5986da8e.296c54"
+      ]
+    ]
+  },
+  {
+    "id": "308eb453.6bfd2c",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "filename",
+        "pt": "msg",
+        "to": "\"/data\" & req.url",
+        "tot": "jsonata"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 350,
+    "y": 180,
+    "wires": [
+      [
+        "3b0de1e4.0f253e"
+      ]
+    ]
+  },
+  {
+    "id": "3b0de1e4.0f253e",
+    "type": "file in",
+    "z": "fbd99c79.ab64",
+    "name": "read file",
+    "filename": "",
+    "format": "",
+    "chunk": false,
+    "sendError": false,
+    "encoding": "none",
+    "x": 520,
+    "y": 180,
+    "wires": [
+      [
+        "9649aa30.e8e988"
+      ]
+    ]
+  },
+  {
+    "id": "9649aa30.e8e988",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "headers",
+        "pt": "msg",
+        "to": "{ \"content-type\": \"image/png\" }",
+        "tot": "json"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 710,
+    "y": 180,
+    "wires": [
+      [
+        "31903cd9.27d594"
+      ]
+    ]
+  },
+  {
+    "id": "1e35325b.cc9abe",
+    "type": "catch",
+    "z": "fbd99c79.ab64",
+    "name": "read error",
+    "scope": [
+      "3b0de1e4.0f253e"
+    ],
+    "uncaught": false,
+    "x": 520,
+    "y": 220,
+    "wires": [
+      [
+        "f8752f6.2330fd"
+      ]
+    ]
+  },
+  {
+    "id": "f8752f6.2330fd",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "set error body",
+    "rules": [
+      {
+        "t": "set",
+        "p": "statusCode",
+        "pt": "msg",
+        "to": "500",
+        "tot": "num"
+      },
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "error",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 700,
+    "y": 220,
+    "wires": [
+      [
+        "31903cd9.27d594"
+      ]
+    ]
+  },
+  {
+    "id": "4168eecb.c2ee2",
+    "type": "file",
+    "z": "fbd99c79.ab64",
+    "name": "save file",
+    "filename": "",
+    "appendNewline": false,
+    "createDir": true,
+    "overwriteFile": "true",
+    "encoding": "none",
+    "x": 520,
+    "y": 100,
+    "wires": [
+      [
+        "2b640202.d0de3e",
+        "2cc6b431.69edfc"
+      ]
+    ]
+  },
+  {
+    "id": "d31acfa4.d893d",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "filename",
+        "pt": "msg",
+        "to": "\"/data\" & req.url",
+        "tot": "jsonata"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 350,
+    "y": 100,
+    "wires": [
+      [
+        "4168eecb.c2ee2"
+      ]
+    ]
+  },
+  {
+    "id": "2b640202.d0de3e",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "@=\"File saved.\"",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "File saved.",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 700,
+    "y": 100,
+    "wires": [
+      [
+        "31903cd9.27d594"
+      ]
+    ]
+  },
+  {
+    "id": "944f4e46.d845",
+    "type": "change",
+    "z": "fbd99c79.ab64",
+    "name": "set error body",
+    "rules": [
+      {
+        "t": "set",
+        "p": "statusCode",
+        "pt": "msg",
+        "to": "400",
+        "tot": "num"
+      },
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "error",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 700,
+    "y": 140,
+    "wires": [
+      [
+        "31903cd9.27d594"
+      ]
+    ]
+  },
+  {
+    "id": "61c6457d.6ad17c",
+    "type": "catch",
+    "z": "fbd99c79.ab64",
+    "name": "save error",
+    "scope": [
+      "4168eecb.c2ee2"
+    ],
+    "uncaught": false,
+    "x": 520,
+    "y": 140,
+    "wires": [
+      [
+        "944f4e46.d845"
       ]
     ]
   }

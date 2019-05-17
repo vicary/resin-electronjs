@@ -16,10 +16,8 @@
 
 // The `https` setting requires the `fs` module. Uncomment the following
 // to make it available:
-//var fs = require("fs");
 
 const os = require('os');
-const fs = require('fs');
 const { Camera } = require('v4l2camera'); //.Camera('/dev/video0'),
 const sharp = require('sharp');
 const printer = require('printer');
@@ -194,7 +192,6 @@ module.exports = {
   functionGlobalContext: {
     process,
     os,
-    fs,
     camera,
     sharp,
     printer,
