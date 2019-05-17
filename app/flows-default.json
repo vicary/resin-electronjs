@@ -391,7 +391,7 @@
     "type": "debug",
     "z": "bab7a3e1.e007a",
     "name": "",
-    "active": true,
+    "active": false,
     "console": "false",
     "complete": "true",
     "x": 130,
@@ -455,47 +455,15 @@
     "id": "8cc240dc.1d6f9",
     "type": "function",
     "z": "bab7a3e1.e007a",
-    "name": "pick random slide",
+    "name": "pick random slide (fs disabled in settings.js)",
     "func": "const fs = global.get('fs');\n\nfs.readdir(\"/data/slides\", (err, files)=> {\n  if (err) return;\n  const file = files[Math.round(Math.random() * files.length)];\n  msg.payload = { slideUrl: file };\n  node.send(msg);\n});\n",
     "outputs": 1,
     "noerr": 0,
-    "x": 350,
+    "x": 430,
     "y": 600,
     "wires": [
       [
-        "9ec633e5.cb44d",
         "a607b8f3.f696b8"
-      ]
-    ]
-  },
-  {
-    "id": "9ec633e5.cb44d",
-    "type": "debug",
-    "z": "bab7a3e1.e007a",
-    "name": "",
-    "active": false,
-    "console": "false",
-    "complete": "payload.slideUrl",
-    "x": 360,
-    "y": 640,
-    "wires": []
-  },
-  {
-    "id": "3aa58436.e0fd3c",
-    "type": "inject",
-    "z": "bab7a3e1.e007a",
-    "name": "Invoke",
-    "topic": "",
-    "payload": "",
-    "payloadType": "date",
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "x": 90,
-    "y": 640,
-    "wires": [
-      [
-        "8cc240dc.1d6f9"
       ]
     ]
   },
@@ -968,8 +936,7 @@
         "b5159274.547d8"
       ],
       [
-        "5986da8e.296c54",
-        "db56f980.876518"
+        "5986da8e.296c54"
       ]
     ]
   },
@@ -1150,18 +1117,6 @@
     "name": "",
     "x": 670,
     "y": 360,
-    "wires": []
-  },
-  {
-    "id": "db56f980.876518",
-    "type": "debug",
-    "z": "bab7a3e1.e007a",
-    "name": "",
-    "active": false,
-    "console": "false",
-    "complete": "false",
-    "x": 610,
-    "y": 640,
     "wires": []
   },
   {
