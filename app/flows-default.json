@@ -29,7 +29,7 @@
       "darkTheme": {
         "default": "#097479",
         "baseColor": "#097479",
-        "baseFont": "Helvetica Neue",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
         "edited": true,
         "reset": false
       },
@@ -80,7 +80,16 @@
         "widget-borderColor": {
           "value": "#333333",
           "edited": false
+        },
+        "base-font": {
+          "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
         }
+      },
+      "angularTheme": {
+        "primary": "indigo",
+        "accents": "blue",
+        "warn": "red",
+        "background": "grey"
       }
     },
     "site": {
@@ -337,7 +346,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "loop: camera.capture()",
-    "func": "let camera = global.get('camera');\nlet jpeg = global.get('jpeg');\nlet active = true;\nlet boundary = msg._msgid;\nlet res = msg.res._res;\n\n// auto close when connection closes.\nmsg.req.on('close', ()=> { active = false; });\n\n// force close on10 secs, just to be safe.\nsetTimeout(()=> { active = false }, 10000);\n\nres.set({\n    'Content-Type': `multipart/x-mixed-replace;boundary=${boundary}`,\n    'Connection': 'keep-alive',\n    'Expires': (new Date()).toString(),\n    'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',\n    'pragma': 'no-cache'\n});\n\n// if already started, skip .start()\nif (!flow.get('active')) {\n    camera.configSet({\n        format: 1196444237,\n        width: 800,\n        height: 600,\n     interval: {\n            numerator: 1,\n            denominator: 30\n        }\n    })\n    .start();\n    \n    flow.set('active', true);\n}\n\nlet capture =camera.capture.bind(camera, success=> {\n    if (success && active && flow.get('active')) {\n        let buffer = Buffer(camera.frameRaw());\n        \n        try {\n          res.write(`--${boundary}\\r\\n`);\n            res.write('Content-Type: image/jpeg\\r\\n');\n            res.write(`Content-Length: ${buffer.length}\\r\\n\\r\\n`);\n            res.write(buffer, 'binary');\n            res.write('\\r\\n');\n        }\n        catch(e) {\n            res.end();\n            throw e;\n   }\n        \n        setTimeout(capture, 100);\n    }\n    else {\n        res.end();\n    }\n});\n\ncapture();\nkeepAlive();\n\nfunction keepAlive() {\n  if (active && flow.get('active')) {\n    node.send(msg);\n    setTimeout(keepAlive, 1000);\n  }\n}",
+    "func": "let camera = global.get('camera');\nlet jpeg = global.get('jpeg');\nlet active = true;\nlet boundary = msg._msgid;\nlet res = msg.res._res;\n\n// auto close when connection closes.\nmsg.req.on('close', ()=> { active = false; });\n\n// force close on10 secs, just to be safe.\nsetTimeout(()=> { active = false }, 10000);\n\nres.set({\n    'Content-Type': `multipart/x-mixed-replace;boundary=${boundary}`,\n    'Connection': 'keep-alive',\n    'Expires': (new Date()).toString(),\n    'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',\n    'pragma': 'no-cache'\n});\n\n// if already started, skip .start()\nif (!flow.get('active')) {\n    camera.configSet({\n        format: 1196444237,\n        width: 800,\n        height: 600,\n        interval: {\n            numerator: 1,\n            denominator: 30,\n        },\n    })\n    .start();\n    \n    flow.set('active', true);\n}\n\nlet capture = camera.capture.bind(camera, success=> {\n    if (success && active && flow.get('active')) {\n        let buffer = Buffer(camera.frameRaw());\n        \n        try {\n          res.write(`--${boundary}\\r\\n`);\n            res.write('Content-Type: image/jpeg\\r\\n');\n            res.write(`Content-Length: ${buffer.length}\\r\\n\\r\\n`);\n            res.write(buffer, 'binary');\n            res.write('\\r\\n');\n        }\n        catch(e) {\n            res.end();\n            throw e;\n        }\n\n        setTimeout(capture, 100);\n    }\n    else {\n        res.end();\n    }\n});\n\ncapture();\nkeepAlive();\n\nfunction keepAlive() {\n  if (active && flow.get('active')) {\n    node.send(msg);\n    setTimeout(keepAlive, 1000);\n  }\n}",
     "outputs": "1",
     "noerr": 0,
     "x": 360,
@@ -374,21 +383,6 @@
     "x": 110,
     "y": 40,
     "wires": []
-  },
-  {
-    "id": "a3d0055e.fcc2f8",
-    "type": "websocketin",
-    "z": "bab7a3e1.e007a",
-    "name": "",
-    "server": "9c520008.abdbc",
-    "client": "",
-    "x": 80,
-    "y": 300,
-    "wires": [
-      [
-        "2ade461a.f78eda"
-      ]
-    ]
   },
   {
     "id": "a74b6084.acd69",
@@ -453,7 +447,7 @@
     "y": 600,
     "wires": [
       [
-        "dc9bbbf4.fcd908"
+        "8cc240dc.1d6f9"
       ]
     ]
   },
@@ -461,43 +455,16 @@
     "id": "8cc240dc.1d6f9",
     "type": "function",
     "z": "bab7a3e1.e007a",
-    "name": "random file in directory `msg.filename`",
-    "func": "let fs = global.get('fs');\n\nfs.readdir(msg.filename, (err, files)=> {\nif (err) return;\n\n    let file = files[Math.round(Math.random() * files.length)];\n    \n    msg.payload = { slideUrl: file };\n    \n    node.send(msg);\n});\n",
+    "name": "pick random slide",
+    "func": "const fs = global.get('fs');\n\nfs.readdir(\"/data/slides\", (err, files)=> {\n  if (err) return;\n  const file = files[Math.round(Math.random() * files.length)];\n  msg.payload = { slideUrl: file };\n  node.send(msg);\n});\n",
     "outputs": 1,
     "noerr": 0,
-    "x": 410,
-    "y": 640,
+    "x": 350,
+    "y": 600,
     "wires": [
       [
         "9ec633e5.cb44d",
         "a607b8f3.f696b8"
-      ]
-    ]
-  },
-  {
-    "id": "dc9bbbf4.fcd908",
-    "type": "change",
-    "z": "bab7a3e1.e007a",
-    "name": "msg.filename= /data/slides",
-    "rules": [
-      {
-        "t": "set",
-        "p": "filename",
-        "pt": "msg",
-        "to": "/data/slides",
-        "tot": "str"
-      }
-    ],
-    "action": "",
-    "property": "",
-    "from": "",
-    "to": "",
-    "reg": false,
-    "x": 380,
-    "y": 600,
-    "wires": [
-      [
-        "8cc240dc.1d6f9"
       ]
     ]
   },
@@ -510,7 +477,7 @@
     "console": "false",
     "complete": "payload.slideUrl",
     "x": 360,
-    "y": 680,
+    "y": 640,
     "wires": []
   },
   {
@@ -528,7 +495,7 @@
     "y": 640,
     "wires": [
       [
-        "dc9bbbf4.fcd908"
+        "8cc240dc.1d6f9"
       ]
     ]
   },
@@ -537,7 +504,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "camera.capture()",
-    "func": "letcamera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
+    "func": "let camera = global.get('camera');\n\nif (!flow.get('active')) {\n    flow.set('active', true);\n    camera.start();\n}\n\ncamera.capture(success=> {\n    if (success) {\n        msg.payload = Buffer(camera.frameRaw());\n        node.send(msg);\n    }\n    else {\n        node.send([null, msg]);\n    }\n});\n",
     "outputs": "2",
     "noerr": 0,
     "x": 530,
@@ -896,7 +863,7 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "print to default printer",
-    "func": "let printer = global.get('printer');\n\nif (printer.getDefaultPrinterName()) {\n  printer.printFile({\n    filename: msg.filename,\n    type: 'JPEG',\n    success: jobId=> {\n      msg.payload = jobId;\n      node.send(msg);\n    },\n    error: err=> {\n      msg.payload = err;\n node.send([null, msg]);\n    }\n  });\n}\nelse {\n  msg.payload = 'Default printer not found.';\n  node.send([null, msg]);\n}\n",
+    "func": "let printer = global.get('printer');\n\nif (printer.getDefaultPrinterName()) {\n  printer.printFile({\n    filename: msg.filename,\n    type: 'JPEG',\n    success: jobId=> {\n      msg.payload = jobId;\n      node.send(msg);\n    },\n    error: err=> {\n      msg.payload = err;\n      node.send([null, msg]);\n    }\n  });\n}\nelse {\n  msg.payload = 'Default printer not found.';\n  node.send([null, msg]);\n}\n",
     "outputs": "2",
     "noerr": 0,
     "x": 360,
@@ -917,15 +884,19 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "compose printing image",
-    "func": "let sharp = global.get('sharp');\n\nmsg.filename = `/tmp/${msg._msgid}.jpg`;\n\n// sharp(null, {\n//   create: {\n//     width: 1200,\n//  height: 800,\n//     channels: 4,\n//     background: { r: 255, g: 255, b: 255, alpha: 255 }\n//   }\n// })\n// .overlayWith('/data/underlay.png')\nsharp('/data/underlay.png')\n.overlayWith('/data/capture.jpg', { top: 100, left: 350 })\n.resize(1740, 1170)\n.withMetadata()\n.jpeg()\n.toFile(msg.filename)\n.then(info=> {\n  msg.payload = info;\n  node.send(msg);\n}, err=> {\n  msg.payload = err;\n  node.send([null, msg]);\n});\n",
+    "func": "const sharp = global.get('sharp');\n\nmsg.filename = `/tmp/${msg._msgid}.jpg`;\n\nsharp.cache(false);\n\n// // Proportional to selphy's original size: 1740 x 1170\n// sharp({ create: {\n//   width: 1160,\n//   height: 780,\n//   channels: 4,\n//   background: { r: 255, g: 255, b: 255 }\n// } })\n//   .composite([\n//     {\n//       input: \"/data/capture.jpg\",\n//     },\n//     {\n//       input: \"/data/underlay.png\",\n//     }\n//   ])\n//   .jpeg()\n//   .toBuffer()\n//   .then(buffer => {\n//     msg.headers = { \"Content-Type\": \"image/jpeg\" };\n//     msg.payload = buffer;\n//     node.send(msg);\n//   }, err=> {\n//     msg.payload = err;\n//     node.send([null, msg]);\n//   });\n\nconst onError = ({ code, message }) => {\n  msg.statusCode = 500;\n  msg.payload = `[${err.code}] ${err.message}`;\n  node.send([null, msg]);\n}\n\n// Sharp 0.17.x\nsharp(null, {\n  create: {\n    width: 1160,\n    height: 780,\n    channels: 4,\n    background: { r: 255, g: 255, b: 255 },\n  }\n})\n.overlayWith(\"/data/capture.jpg\")\n.withMetadata()\n.jpeg()\n.toBuffer()\n.then(\n  data => {\n    sharp(data)\n      .overlayWith(\"/data/underlay.png\")\n    //   .resize(1740, 1170)\n      .withMetadata()\n      .jpeg()\n      .toFile(msg.filename)\n      .then(\n        info => {\n          msg.payload = info;\n          node.send(msg);\n        },\n        onError\n      );\n  },\n  onError\n);\n",
     "outputs": "2",
     "noerr": 0,
     "x": 370,
     "y": 480,
     "wires": [
-      [],
       [
-        "5986da8e.296c54"
+        "524f77f1.0a0238",
+        "f87a9fd8.6e696"
+      ],
+      [
+        "5986da8e.296c54",
+        "98daae18.3fa8c"
       ]
     ]
   },
@@ -1098,7 +1069,7 @@
     "method": "put",
     "swaggerDoc": "",
     "x": 120,
-    "y": 40,
+    "y": 80,
     "wires": [
       [
         "f42129b7.dcfef8"
@@ -1114,7 +1085,7 @@
     "outputs": 1,
     "noerr": 0,
     "x": 320,
-    "y": 80,
+    "y": 120,
     "wires": [
       [
         "31903cd9.27d594",
@@ -1128,7 +1099,7 @@
     "z": "fbd99c79.ab64",
     "name": "",
     "x": 570,
-    "y": 80,
+    "y": 120,
     "wires": []
   },
   {
@@ -1140,7 +1111,7 @@
     "method": "put",
     "swaggerDoc": "",
     "x": 110,
-    "y": 80,
+    "y": 120,
     "wires": [
       [
         "f42129b7.dcfef8"
@@ -1156,7 +1127,7 @@
     "method": "get",
     "swaggerDoc": "",
     "x": 120,
-    "y": 120,
+    "y": 160,
     "wires": [
       [
         "a7ff3a08.10e508"
@@ -1172,7 +1143,7 @@
     "method": "get",
     "swaggerDoc": "",
     "x": 110,
-    "y": 160,
+    "y": 200,
     "wires": [
       [
         "a7ff3a08.10e508"
@@ -1188,7 +1159,7 @@
     "outputs": "2",
     "noerr": 0,
     "x": 320,
-    "y": 140,
+    "y": 180,
     "wires": [
       [
         "31903cd9.27d594"
@@ -1208,7 +1179,7 @@
     "console": "false",
     "complete": "false",
     "x": 600,
-    "y": 120,
+    "y": 160,
     "wires": []
   },
   {
@@ -1257,11 +1228,11 @@
     "type": "debug",
     "z": "bab7a3e1.e007a",
     "name": "",
-    "active": false,
+    "active": true,
     "console": "false",
     "complete": "false",
     "x": 610,
-    "y": 560,
+    "y": 520,
     "wires": []
   },
   {
@@ -1273,7 +1244,7 @@
     "console": "false",
     "complete": "false",
     "x": 610,
-    "y": 680,
+    "y": 640,
     "wires": []
   },
   {
@@ -2069,7 +2040,7 @@
     "timeout": "1",
     "timeoutUnits": "seconds",
     "rate": "1",
-    "nbRateUnits": "5",
+    "nbRateUnits": "2",
     "rateUnits": "second",
     "randomFirst": "1",
     "randomLast": "5",
@@ -2224,7 +2195,7 @@
       "189f1c64.c33c94"
     ],
     "x": 675,
-    "y": 40,
+    "y": 80,
     "wires": []
   },
   {
@@ -2247,10 +2218,111 @@
     "to": "",
     "reg": false,
     "x": 580,
-    "y": 40,
+    "y": 80,
     "wires": [
       [
         "105f105f.f1506"
+      ]
+    ]
+  },
+  {
+    "id": "979780c8.bf499",
+    "type": "websocket in",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "server": "9c520008.abdbc",
+    "client": "",
+    "x": 80,
+    "y": 320,
+    "wires": [
+      [
+        "2ade461a.f78eda"
+      ]
+    ]
+  },
+  {
+    "id": "b5c24703.ef9f68",
+    "type": "comment",
+    "z": "fbd99c79.ab64",
+    "name": "Image dimentsions",
+    "info": "# 1. Background\nBackground should match the screen size, \nwhich is 800 x 600.\n\n# 2. Underlay\nThis is the photo frame that would be layered\nover the photo, should match the captured\nimage. Currently.",
+    "x": 110,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "73f305fb.63fb9c",
+    "type": "function",
+    "z": "fbd99c79.ab64",
+    "name": "image underlay",
+    "func": "const sharp = global.get('sharp');\n\nsharp.cache(false);\n\n// // Proportional to selphy's original size: 1740 x 1170\n// sharp({ create: {\n//   width: 1160,\n//   height: 780,\n//   channels: 4,\n//   background: { r: 255, g: 255, b: 255 }\n// } })\n//   .composite([\n//     {\n//       input: \"/data/capture.jpg\",\n//     },\n//     {\n//       input: \"/data/underlay.png\",\n//     }\n//   ])\n//   .jpeg()\n//   .toBuffer()\n//   .then(buffer => {\n//     msg.headers = { \"Content-Type\": \"image/jpeg\" };\n//     msg.payload = buffer;\n//     node.send(msg);\n//   }, err=> {\n//     msg.payload = err;\n//     node.send([null, msg]);\n//   });\n\nconst onError = ({ code, message }) => {\n  msg.statusCode = 500;\n  msg.payload = `[${err.code}] ${err.message}`;\n  node.send([null, msg]);\n}\n\n// Sharp 0.17.x\nsharp(null, {\n  create: {\n    width: 1160,\n    height: 780,\n    channels: 4,\n    background: { r: 255, g: 255, b: 255 },\n  }\n})\n.overlayWith(\"/data/capture.jpg\")\n.jpeg()\n.toBuffer()\n.then(\n  data => {\n    sharp(data)\n      .overlayWith(\"/data/underlay.png\")\n      .jpeg()\n      .toBuffer()\n      .then(\n        data => {\n          msg.headers = { \"content-type\": \"image/jpeg\" };\n          msg.payload = data;\n          node.send(msg);\n        },\n        onError\n      );\n  },\n  onError\n);\n",
+    "outputs": "2",
+    "noerr": 0,
+    "x": 340,
+    "y": 280,
+    "wires": [
+      [
+        "72518fe8.91701"
+      ],
+      [
+        "72518fe8.91701"
+      ]
+    ]
+  },
+  {
+    "id": "8c5f640f.f77748",
+    "type": "http in",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "url": "/result.jpg",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 100,
+    "y": 280,
+    "wires": [
+      [
+        "73f305fb.63fb9c"
+      ]
+    ]
+  },
+  {
+    "id": "72518fe8.91701",
+    "type": "http response",
+    "z": "fbd99c79.ab64",
+    "name": "",
+    "x": 570,
+    "y": 280,
+    "wires": []
+  },
+  {
+    "id": "f87a9fd8.6e696",
+    "type": "debug",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "filename",
+    "x": 620,
+    "y": 480,
+    "wires": []
+  },
+  {
+    "id": "6bed6de6.1015a4",
+    "type": "inject",
+    "z": "bab7a3e1.e007a",
+    "name": "Invoke",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "x": 130,
+    "y": 480,
+    "wires": [
+      [
+        "e496556c.cca6b8"
       ]
     ]
   }
