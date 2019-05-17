@@ -678,14 +678,14 @@
     "type": "function",
     "z": "bab7a3e1.e007a",
     "name": "write: /data/capture.jpg",
-    "func": "let fs = global.get('fs');\n\nfs.writeFile('/data/capture.jpg', msg.payload, (err)=> {\n    if (err) {\n        msg.payload = err;\n        node.send([null, msg]);\n    }\n    else {\n        node.send(msg);\n    }\n});\n",
+    "func": "const fs = global.get('fs');\n\nfs.writeFile('/data/capture.jpg', msg.payload, (err)=> {\n    if (err) {\n        msg.payload = err;\n        node.send([null, msg]);\n    }\n    else {\n        node.send(msg);\n    }\n});\n",
     "outputs": "2",
     "noerr": 0,
     "x": 550,
     "y": 360,
     "wires": [
       [
-        "7c426567.5841fc"
+        "9d948153.a907a"
       ],
       [
         "5986da8e.296c54"
@@ -2301,7 +2301,8 @@
     "z": "bab7a3e1.e007a",
     "name": "",
     "active": true,
-    "console": "false",
+    "tosidebar": true,
+    "console": false,
     "complete": "filename",
     "x": 620,
     "y": 480,
@@ -2323,6 +2324,29 @@
     "wires": [
       [
         "e496556c.cca6b8"
+      ]
+    ]
+  },
+  {
+    "id": "9d948153.a907a",
+    "type": "delay",
+    "z": "bab7a3e1.e007a",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "500",
+    "timeoutUnits": "milliseconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "x": 510,
+    "y": 400,
+    "wires": [
+      [
+        "7c426567.5841fc"
       ]
     ]
   }
