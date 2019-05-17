@@ -24,7 +24,7 @@ if device_id.find('ASK-300') > -1:
   try:
     ppds = conn.getPPDs(ppd_product='Fujifilm ASK-300')
   except cups.IPPError:
-    print 'PPD for ASK-300 not found';
+    print 'PPD for ASK-300 not found'
     exit(1)
 else:
   try:
